@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Troubleshooting — Leenium</title>
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div class="wrapper">
+
+    <header class="top">
+      <div class="chrome">
+        <div class="dots" aria-hidden="true">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        </div>
+        <strong>troubleshooting</strong>
+        <span>logs and recovery</span>
+      </div>
+      <div class="top-body">
+        <span class="eyebrow">Recovery</span>
+        <h1 class="title">Leenium <span class="title-accent">Troubleshooting</span></h1>
+        <p class="subtitle">When something breaks: logs first, smallest targeted recovery command second, broad resets last. Follow that order every time.</p>
+        <nav class="nav">
+          <a href="../">Manual Home</a>
+          <a href="../../">leenium.org</a>
+          <a href="../install/">Install Manual</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="section">
+      <h2>Install Failures</h2>
+      <p>Always start here for install-time issues:</p>
+      <pre>/var/log/archinstall/install.log
+/var/log/leenium-install.log</pre>
+      <p>To share the failure for support:</p>
+      <pre>leenium-upload-log install</pre>
+    </section>
+
+    <section class="section">
+      <h2>First-Run Problems</h2>
+      <p>If the system boots but first-login automation did not complete:</p>
+      <pre>leenium-cmd-first-run</pre>
+      <p>Then verify the first-run marker state:</p>
+      <pre>cat ~/.local/state/leenium/first-run.mode</pre>
+    </section>
+
+    <section class="section">
+      <h2>UI Component Recovery</h2>
+      <div class="columns-2">
+        <div class="mini-card">
+          <h3>Restart services</h3>
+          <ul>
+            <li><code>leenium-restart-waybar</code></li>
+            <li><code>leenium-restart-walker</code></li>
+            <li><code>leenium-restart-mako</code></li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <h3>Reapply config</h3>
+          <ul>
+            <li><code>leenium-reinstall-configs</code></li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout warn">
+        <p><code>leenium-reinstall-configs</code> is a reset-style tool. Use it when config drift is the likely cause, not as the first response to every UI problem. It can overwrite local customizations.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Update Recovery</h2>
+      <ul>
+        <li><code>leenium-update</code> — normal update path</li>
+        <li><code>leenium-update-analyze-logs</code> — when update logs mention initramfs or related warnings</li>
+        <li><code>leenium-reinstall</code> — when the baseline package state needs to be forced back into line</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Collect Debug Information</h2>
+      <pre>leenium-debug
+leenium-debug --print
+leenium-upload-log this-boot
+leenium-upload-log last-boot</pre>
+    </section>
+
+    <section class="section">
+      <h2>Recovery Order</h2>
+      <ol>
+        <li>Read the relevant log file first</li>
+        <li>Run the smallest targeted recovery command</li>
+        <li>Collect debug output before any broad resets</li>
+        <li>Use reinstall-style commands only after targeted options are exhausted</li>
+      </ol>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-links">
+        <a href="../">Manual Home</a>
+        <a href="../install/">Install Manual</a>
+        <a href="../post-install/">Post-Install Guide</a>
+        <a href="../../">leenium.org</a>
+      </div>
+    </footer>
+
+  </div>
+</body>
+</html>

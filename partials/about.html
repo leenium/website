@@ -1,0 +1,72 @@
+<div class="prompt-line">
+  <span class="ps">user@leenium:~$</span>
+  <span class="cmd">about</span>
+</div>
+
+<p style="color:var(--muted);font-size:0.9375rem;line-height:1.72;margin:0 0 22px;max-width:68ch;">
+  Started as a fork of <a href="https://github.com/basecamp/omarchy" target="_blank" rel="noopener noreferrer">Omarchy</a> (DHH's setup),
+  went its own direction pretty fast. Not a distro, not a rice — just a scripted
+  install that sets up Arch + Hyprland exactly how I want it.
+  Installs what it ships, configures what it touches, stays out of your way after.
+</p>
+
+<div class="grid-2" style="margin-bottom:22px;">
+  <div class="card">
+    <h3>How it works</h3>
+    <p>
+      Staged pipeline: preflight checks, then packages, then dotfiles and config,
+      then login/display setup, then post-install. Source is open — you can read every
+      step before running it.
+    </p>
+  </div>
+  <div class="card">
+    <h3>Hardware</h3>
+    <p>
+      Has workarounds for Framework 16, ASUS ROG, Dell XPS OLED, Apple displays,
+      Intel Panther Lake. Detects what you're on and applies the right fixes without asking.
+    </p>
+  </div>
+  <div class="card">
+    <h3>Philosophy</h3>
+    <p>
+      <code>Super+Enter</code> opens a terminal. <code>Super+K</code> shows keybindings.
+      You shouldn't need a mouse. If you do, there's probably a binding you haven't learned yet.
+    </p>
+  </div>
+  <div class="card">
+    <h3>Keeping it updated</h3>
+    <p>
+      <code>leenium-update</code> handles packages. Config migrations run between versions.
+      If things drift, <code>leenium-reinstall</code> resets the baseline.
+    </p>
+  </div>
+</div>
+
+<hr class="divider">
+
+<p class="section-label" style="margin-bottom:14px;">Credits</p>
+
+<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:22px;">
+  <div class="card" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;">
+    <div>
+      <div style="color:var(--tx);font-weight:600;font-size:0.9rem;margin-bottom:4px;">DrunkLeen</div>
+      <div style="color:var(--muted);font-size:0.875rem;">Author and maintainer of Leenium</div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;">
+      <a href="mailto:snape@drunkleen.com" class="btn" style="font-size:0.8rem;padding:7px 12px;">snape@drunkleen.com</a>
+      <a href="https://github.com/drunkleen" target="_blank" rel="noopener noreferrer" class="btn" style="font-size:0.8rem;padding:7px 12px;">github ↗</a>
+    </div>
+  </div>
+
+  <div class="card" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;">
+    <div>
+      <div style="color:var(--tx);font-weight:600;font-size:0.9rem;margin-bottom:4px;">Omarchy — Basecamp</div>
+      <div style="color:var(--muted);font-size:0.875rem;">Upstream project that Leenium forks from</div>
+    </div>
+    <a href="https://github.com/basecamp/omarchy" target="_blank" rel="noopener noreferrer" class="btn" style="font-size:0.8rem;padding:7px 12px;">github ↗</a>
+  </div>
+</div>
+
+<div class="callout">
+  <p>Leenium is released under the MIT License. Source is open on <a href="https://github.com/leenium" target="_blank" rel="noopener noreferrer">github.com/leenium</a>.</p>
+</div>

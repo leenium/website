@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hypr Config Reference — Leenium</title>
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div class="wrapper">
+
+    <header class="top">
+      <div class="chrome">
+        <div class="dots" aria-hidden="true">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        </div>
+        <strong>hypr-reference</strong>
+        <span>config layering guide</span>
+      </div>
+      <div class="top-body">
+        <span class="eyebrow">Hyprland</span>
+        <h1 class="title">Hypr <span class="title-accent">Config Reference</span></h1>
+        <p class="subtitle">Leenium uses a layered Hyprland setup. This page explains which files are project-owned, which are yours to edit, and what happens when Leenium helper commands touch them.</p>
+        <nav class="nav">
+          <a href="../">Manual Home</a>
+          <a href="../../">leenium.org</a>
+          <a href="../keybindings/">Keybindings</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="section">
+      <h2>Load Order</h2>
+      <p>Your <code>~/.config/hypr/hyprland.conf</code> first sources Leenium defaults from <code>~/.local/share/leenium/default/hypr</code>, then loads user overrides from <code>~/.config/hypr</code>.</p>
+      <pre>Defaults:  autostart, media / clipboard / tiling / utilities bindings,
+           envs, looknfeel, input, windows, current theme.
+
+Overrides: monitors.conf, input.conf, bindings.conf,
+           looknfeel.conf, autostart.conf.</pre>
+      <div class="callout">
+        <p>Practical rule: edit files under <code>~/.config/hypr</code>. Treat <code>~/.local/share/leenium/default/hypr</code> as project-owned baseline — it can be overwritten by <code>leenium-reinstall-configs</code>.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>User Override Tree</h2>
+      <div class="columns-2">
+        <div class="mini-card">
+          <h3>Main overrides</h3>
+          <ul>
+            <li><code>monitors.conf</code></li>
+            <li><code>input.conf</code></li>
+            <li><code>bindings.conf</code></li>
+            <li><code>looknfeel.conf</code></li>
+            <li><code>autostart.conf</code></li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <h3>Related runtime files</h3>
+          <ul>
+            <li><code>hypridle.conf</code></li>
+            <li><code>hyprlock.conf</code></li>
+            <li><code>hyprsunset.conf</code></li>
+            <li><code>xdph.conf</code></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Leenium Default Tree</h2>
+      <ul>
+        <li><code>looknfeel.conf</code>, <code>input.conf</code>, <code>windows.conf</code>, <code>envs.conf</code> — baseline behavior</li>
+        <li><code>autostart.conf</code> — starts base services and first-run entrypoints</li>
+        <li><code>bindings/</code> — media, clipboard, tiling, and utility bindings</li>
+        <li><code>apps.conf</code> and <code>apps/*.conf</code> — app-specific window rules</li>
+        <li><code>plain-bindings.conf</code> — simpler direct binding overrides</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Commands When Tweaking</h2>
+      <pre>hyprctl reload
+leenium-menu-keybindings --print
+leenium-reinstall-configs</pre>
+      <div class="callout warn">
+        <p><code>leenium-reinstall-configs</code> is not a light refresh. It resets project-owned config files and can overwrite local customizations in the defaults tree. Use it intentionally.</p>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-links">
+        <a href="../">Manual Home</a>
+        <a href="../keybindings/">Keybindings</a>
+        <a href="../troubleshooting/">Troubleshooting</a>
+        <a href="../../">leenium.org</a>
+      </div>
+    </footer>
+
+  </div>
+</body>
+</html>

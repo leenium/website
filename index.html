@@ -1,0 +1,1165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LEENIUM — Arch Linux + Hyprland</title>
+  <meta name="description" content="Arch Linux + Hyprland, scripted. Run it after archinstall and get a working keyboard-first desktop without the weekend of config work.">
+  <link rel="icon" type="image/x-icon" href="./favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/htmx.org@1.9.12/dist/htmx.min.js"></script>
+  <style>
+    :root {
+      --bg:     #05080e;
+      --bg2:    #070c14;
+      --panel:  #09131d;
+      --bdr:    #18303f;
+      --bdhi:   #285060;
+      --tx:     #d8f7ea;
+      --muted:  #7db4a0;
+      --accent: #3de8a0;
+      --blue:   #4ab8e8;
+      --warn:   #ffd479;
+      --red:    #ff938a;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background:
+        radial-gradient(ellipse 70% 40% at 12% -8%, rgba(61,232,160,0.07) 0%, transparent 55%),
+        radial-gradient(ellipse 55% 30% at 88% 4%, rgba(74,184,232,0.045) 0%, transparent 50%),
+        var(--bg);
+      color: var(--tx);
+      min-height: 100vh;
+    }
+
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--bdr); border-radius: 99px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--bdhi); }
+
+    ::selection { background: rgba(61,232,160,0.18); }
+
+    /* Inline code — used in partials loaded into #content */
+    #content :not(pre) > code,
+    .logo-subline code {
+      font-family: inherit;
+      color: var(--warn);
+      background: rgba(5,14,22,0.95);
+      border: 1px solid var(--bdr);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: 0.875em;
+    }
+
+    /* Code blocks */
+    pre {
+      font-family: inherit;
+      background: #030609;
+      border: 1px solid var(--bdr);
+      border-radius: 10px;
+      padding: 14px 16px;
+      overflow-x: auto;
+      color: #c8f0dd;
+      line-height: 1.65;
+      font-size: 0.875rem;
+      margin: 0 0 14px;
+    }
+    pre code {
+      background: none !important;
+      border: none !important;
+      padding: 0 !important;
+      color: inherit;
+      font-size: inherit;
+    }
+
+    /* Blink cursor */
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+    .blink { animation: blink 1.1s step-end infinite; }
+
+    /* Window glow */
+    .window {
+      border: 1px solid var(--bdr);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow:
+        0 0 0 1px rgba(61,232,160,0.04),
+        0 0 60px rgba(61,232,160,0.07),
+        0 28px 80px rgba(0,0,0,0.6);
+    }
+
+    /* Window chrome sections */
+    .win-chrome {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--bdr);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .win-prompt {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--bdr);
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .win-tabs {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--bdr);
+      padding: 8px 12px;
+      display: flex;
+      gap: 5px;
+      overflow-x: auto;
+    }
+    .win-tabs::-webkit-scrollbar { height: 0; }
+    .win-statusbar {
+      background: var(--bg2);
+      border-top: 1px solid var(--bdr);
+      padding: 6px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--muted);
+      gap: 12px;
+    }
+
+    /* Tab button */
+    .tab {
+      padding: 6px 12px;
+      font: inherit;
+      font-size: 0.8rem;
+      color: var(--muted);
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: color 0.1s, border-color 0.1s, background 0.1s;
+      user-select: none;
+    }
+    .tab:hover:not(.active) {
+      color: var(--tx);
+      border-color: var(--bdr);
+    }
+    .tab.active {
+      color: var(--accent);
+      border-color: rgba(61,232,160,0.35);
+      background: rgba(61,232,160,0.06);
+    }
+
+    /* macOS dots */
+    .dots { display: flex; gap: 7px; flex-shrink: 0; }
+    .dot { width: 11px; height: 11px; border-radius: 50%; }
+    .dot.r { background: #ff5f56; }
+    .dot.y { background: #ffbd2e; }
+    .dot.g { background: #27c93f; }
+
+
+    /* Content links */
+    #content a { color: var(--accent); text-decoration: none; }
+    #content a:hover { text-decoration: underline; }
+
+    /* ─── Shared component styles (used by partials) ─── */
+
+    .prompt-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.875rem;
+      margin-bottom: 20px;
+    }
+    .prompt-line .ps { color: var(--accent); user-select: none; }
+    .prompt-line .cmd { color: var(--tx); }
+
+    .section-label {
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin: 0 0 10px;
+    }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+
+    .card {
+      border: 1px solid var(--bdr);
+      border-radius: 12px;
+      background: rgba(7,15,26,0.8);
+      padding: 16px;
+      transition: border-color 0.12s;
+    }
+    .card:hover { border-color: var(--bdhi); }
+    .card h3 {
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin: 0 0 9px;
+    }
+    .card p {
+      color: var(--muted);
+      font-size: 0.875rem;
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    .callout {
+      border-left: 2px solid var(--accent);
+      border-radius: 0 10px 10px 0;
+      background: rgba(8,18,32,0.8);
+      padding: 12px 14px;
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 14px;
+    }
+    .callout.warn  { border-left-color: var(--warn); }
+    .callout.danger { border-left-color: var(--red); }
+    .callout p { margin: 0 0 6px; }
+    .callout p:last-child { margin: 0; }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border: 1px solid var(--bdr);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      background: rgba(7,15,26,0.8);
+    }
+
+    .pill-row { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 14px;
+      border: 1px solid var(--bdr);
+      border-radius: 9px;
+      background: rgba(7,15,26,0.8);
+      color: var(--tx);
+      font: inherit;
+      font-size: 0.875rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: border-color 0.12s, background 0.12s;
+      white-space: nowrap;
+    }
+    .btn:hover {
+      border-color: var(--bdhi);
+      background: rgba(12,24,42,0.9);
+      text-decoration: none !important;
+    }
+    .btn.primary {
+      border-color: rgba(61,232,160,0.35);
+      background: rgba(61,232,160,0.07);
+      color: var(--accent);
+    }
+    .btn.primary:hover {
+      background: rgba(61,232,160,0.13);
+      border-color: rgba(61,232,160,0.55);
+    }
+
+    .method-block {
+      border: 1px solid var(--bdr);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .method-header {
+      background: rgba(7,15,26,0.9);
+      border-bottom: 1px solid var(--bdr);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .method-header h3 {
+      margin: 0;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--tx);
+    }
+    .method-body { padding: 14px; }
+    .method-body pre { margin-bottom: 0; }
+    .method-body p {
+      color: var(--muted);
+      font-size: 0.875rem;
+      line-height: 1.65;
+      margin: 0 0 12px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      flex-shrink: 0;
+    }
+    .badge.wipe {
+      background: rgba(255,147,138,0.12);
+      border: 1px solid rgba(255,147,138,0.35);
+      color: var(--red);
+    }
+    .badge.safe {
+      background: rgba(61,232,160,0.1);
+      border: 1px solid rgba(61,232,160,0.3);
+      color: var(--accent);
+    }
+
+    /* Keybindings table */
+    .kbd-section { margin-bottom: 24px; }
+    .kbd-section-title {
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding-bottom: 7px;
+      margin-bottom: 2px;
+      border-bottom: 1px solid var(--bdr);
+    }
+    .kbd-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.84rem;
+    }
+    .kbd-table th {
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 8px 10px;
+      text-align: left;
+      border-bottom: 1px solid rgba(24,48,63,0.9);
+    }
+    .kbd-table td {
+      padding: 7px 10px;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid rgba(24,48,63,0.4);
+    }
+    .kbd-table tbody tr:last-child td { border-bottom: none; }
+    .kbd-table tbody tr:hover td { background: rgba(61,232,160,0.025); }
+    .kbd-table tr.hidden { display: none; }
+
+    .searchbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--bdr);
+      border-radius: 10px;
+      padding: 9px 12px;
+      background: rgba(3,6,9,0.9);
+      margin-bottom: 20px;
+      transition: border-color 0.1s;
+    }
+    .searchbar:focus-within { border-color: var(--bdhi); }
+    .searchbar .hint { color: var(--accent); font-size: 0.875rem; flex-shrink: 0; }
+    .searchbar input {
+      flex: 1;
+      min-width: 0;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--tx);
+      font: inherit;
+      font-size: 0.875rem;
+    }
+    .searchbar input::placeholder { color: var(--bdhi); }
+
+    /* Repo cards */
+    .repo-card {
+      border: 1px solid var(--bdr);
+      border-radius: 12px;
+      background: rgba(7,15,26,0.8);
+      padding: 16px 18px;
+      text-decoration: none;
+      display: block;
+      transition: border-color 0.12s, background 0.12s;
+    }
+    .repo-card:hover {
+      border-color: rgba(61,232,160,0.35);
+      background: rgba(10,22,38,0.9);
+      text-decoration: none !important;
+    }
+    .repo-card .repo-name {
+      color: var(--accent);
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin: 0 0 5px;
+    }
+    .repo-card .repo-url {
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin: 0 0 8px;
+    }
+    .repo-card .repo-desc {
+      color: var(--muted);
+      font-size: 0.875rem;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--bdr);
+      margin: 20px 0;
+    }
+
+    /* Terminal layout */
+    .win-content {
+      background: var(--panel);
+      display: flex;
+      flex-direction: column;
+      min-height: 440px;
+      max-height: 600px;
+      padding: 0;
+    }
+    .term-output {
+      flex: 1;
+      overflow-y: auto;
+      padding: 22px 22px 12px;
+      scroll-behavior: smooth;
+    }
+    .term-output::-webkit-scrollbar { width: 4px; }
+    .term-output::-webkit-scrollbar-thumb { background: var(--bdr); border-radius: 99px; }
+    .term-block { margin-bottom: 20px; }
+    .term-suggestions {
+      padding: 6px 22px 0;
+      display: none;
+      gap: 6px;
+      flex-wrap: wrap;
+      flex-shrink: 0;
+    }
+    .term-prompt-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border-top: 1px solid var(--bdr);
+      background: var(--bg2);
+      flex-shrink: 0;
+    }
+    .sug-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 4px 10px;
+      border: 1px solid var(--bdr);
+      border-radius: 7px;
+      background: transparent;
+      font: inherit;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: border-color 0.1s, background 0.1s;
+      white-space: nowrap;
+    }
+    .sug-item:hover, .sug-item.focused {
+      border-color: rgba(61,232,160,0.4);
+      background: rgba(61,232,160,0.06);
+    }
+    .sug-name { color: var(--accent); }
+    .sug-desc { color: var(--muted); }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .term-output { padding: 14px 14px 8px; }
+      .term-prompt-row { padding: 10px 14px; }
+      .win-statusbar .right { display: none; }
+    }
+  </style>
+</head>
+<body class="p-3 sm:p-5">
+  <div class="max-w-4xl mx-auto flex flex-col gap-3">
+
+    <div class="window">
+
+      <!-- Window chrome -->
+      <header class="win-chrome">
+        <div class="dots" aria-hidden="true">
+          <span class="dot r"></span>
+          <span class="dot y"></span>
+          <span class="dot g"></span>
+        </div>
+        <span style="flex:1;text-align:center;font-size:0.82rem;color:var(--muted);letter-spacing:0.06em;font-weight:700;">LEENIUM</span>
+        <a href="https://github.com/leenium" target="_blank" rel="noopener noreferrer"
+           style="font-size:0.75rem;color:var(--muted);text-decoration:none;flex-shrink:0;transition:color 0.1s;"
+           onmouseover="this.style.color='var(--accent)'"
+           onmouseout="this.style.color='var(--muted)'">github ↗</a>
+      </header>
+
+      <!-- Tab navigation -->
+      <nav id="tabs" class="win-tabs" aria-label="Navigation">
+        <button type="button" class="tab" data-panel="home">home</button>
+        <button type="button" class="tab" data-panel="install">install</button>
+        <button type="button" class="tab" data-panel="keybindings">keybindings</button>
+        <button type="button" class="tab" data-panel="manual">manual</button>
+        <button type="button" class="tab" data-panel="repos">repos</button>
+        <button type="button" class="tab" data-panel="about">about</button>
+        <button type="button" class="tab" data-cmd="neofetch">neofetch</button>
+      </nav>
+
+      <!-- Terminal content area -->
+      <main id="content" class="win-content" aria-live="polite">
+        <div id="termOutput" class="term-output">
+          <div style="color:var(--muted);font-size:0.875rem;display:flex;align-items:center;gap:8px;">
+            <span class="blink" style="color:var(--accent);">▋</span> Loading...
+          </div>
+        </div>
+        <div id="termSuggestions" class="term-suggestions"></div>
+        <div class="term-prompt-row">
+          <span style="color:var(--accent);font-size:0.875rem;flex-shrink:0;user-select:none;">user@leenium:~$</span>
+          <label for="cmdInput" class="sr-only">Command</label>
+          <input id="cmdInput" type="text" autocomplete="off" spellcheck="false"
+                 placeholder="try: install · help · neofetch · ls · tree"
+                 style="flex:1;min-width:0;background:transparent;border:none;outline:none;color:var(--tx);font:inherit;font-size:0.875rem;caret-color:var(--accent);">
+        </div>
+      </main>
+
+      <!-- Status bar -->
+      <footer class="win-statusbar">
+        <span id="statusMsg" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Ready. Keys 1–6 switch tabs.</span>
+        <span class="right" style="flex-shrink:0;white-space:nowrap;">
+          by <a href="mailto:snape@drunkleen.com"
+               style="color:var(--muted);text-decoration:none;transition:color 0.1s;"
+               onmouseover="this.style.color='var(--accent)'"
+               onmouseout="this.style.color='var(--muted)'">DrunkLeen</a>
+          · fork of
+          <a href="https://github.com/basecamp/omarchy" target="_blank" rel="noopener noreferrer"
+             style="color:var(--muted);text-decoration:none;transition:color 0.1s;"
+             onmouseover="this.style.color='var(--accent)'"
+             onmouseout="this.style.color='var(--muted)'">Omarchy</a>
+          · MIT
+        </span>
+      </footer>
+
+    </div>
+
+  </div>
+
+  <script>
+    const PANELS = {
+      home:        'partials/home.html',
+      install:     'partials/install.html',
+      keybindings: 'partials/keybindings.html',
+      manual:      'partials/manual.html',
+      repos:       'partials/repos.html',
+      about:       'partials/about.html',
+    };
+
+    // Navigation aliases → panel key
+    const NAV = {
+      home: 'home', start: 'home', index: 'home',
+      install: 'install', download: 'install', get: 'install', setup: 'install', iso: 'install',
+      'install leenium': 'install', 'get leenium': 'install', 'get started': 'install',
+      keybindings: 'keybindings', kb: 'keybindings', keys: 'keybindings', binds: 'keybindings',
+      hotkeys: 'keybindings', shortcuts: 'keybindings', shortcut: 'keybindings',
+      manual: 'manual', docs: 'manual', hypr: 'manual', hyprland: 'manual',
+      troubleshoot: 'manual', documentation: 'manual', guide: 'manual',
+      repos: 'repos', repo: 'repos', github: 'repos', source: 'repos', git: 'repos',
+      about: 'about', contact: 'about', credits: 'about', info: 'about',
+      drunkleen: 'about', author: 'about',
+    };
+
+    // Primary commands for autocomplete
+    const CMD_LIST = [
+      { name: 'home',        desc: 'start page'      },
+      { name: 'install',     desc: 'how to install'  },
+      { name: 'keybindings', desc: 'all shortcuts'   },
+      { name: 'manual',      desc: 'documentation'   },
+      { name: 'repos',       desc: 'source repos'    },
+      { name: 'about',       desc: 'about + credits' },
+      { name: 'neofetch',    desc: 'system info'     },
+      { name: 'help',        desc: 'list commands'   },
+      { name: 'ls',          desc: 'list panels'     },
+      { name: 'pwd',         desc: 'current panel'   },
+      { name: 'clear',       desc: 'clear screen'    },
+      { name: 'whoami',      desc: 'who made this'   },
+      { name: 'date',        desc: 'current date'    },
+      { name: 'uname',       desc: 'system info'     },
+      { name: 'uptime',      desc: 'page uptime'     },
+      { name: 'version',     desc: 'leenium version' },
+      { name: 'history',     desc: 'cmd history'     },
+      { name: 'links',       desc: 'all links'       },
+      { name: 'tree',        desc: 'site structure'  },
+      { name: 'alias',       desc: 'show aliases'    },
+      { name: 'echo',        desc: 'echo text'       },
+      { name: 'which',       desc: 'resolve command' },
+      { name: 'cat',         desc: 'open a panel'    },
+      { name: 'man',         desc: 'open manual'     },
+      { name: 'sudo',        desc: 'try it'          },
+      { name: 'exit',        desc: 'leave'           },
+      { name: 'reboot',      desc: 'reload page'     },
+      { name: 'pacman',      desc: 'pkg manager'     },
+      { name: 'vim',         desc: 'editor'          },
+      { name: 'hack',        desc: '???'             },
+      { name: 'curl',        desc: 'fetch a url'     },
+    ];
+
+    // State
+    const statusMsg   = document.getElementById('statusMsg');
+    const cmdInput    = document.getElementById('cmdInput');
+    const sugBox      = document.getElementById('termSuggestions');
+    const termOutput  = document.getElementById('termOutput');
+    const panelKeys   = Object.keys(PANELS);
+    const cmdHistory  = [];
+    let historyIdx    = -1;
+    let currentPanel  = 'home';
+    let sugFocus      = -1;
+    const pageStart   = Date.now();
+
+    // ── Navigation ──────────────────────────────────────────
+
+    function setActiveTab(key) {
+      document.querySelectorAll('#tabs .tab').forEach(t => {
+        t.classList.toggle('active', t.dataset.panel === key);
+      });
+    }
+
+    function appendBlock(cmdText, outputHtml) {
+      const block = document.createElement('div');
+      block.className = 'term-block';
+      block.innerHTML =
+        (cmdText ? `<div class="prompt-line"><span class="ps">user@leenium:~$</span><span class="cmd">${cmdText}</span></div>` : '') +
+        outputHtml;
+      termOutput.appendChild(block);
+      block.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return block;
+    }
+
+    async function loadPanel(key) {
+      const url = PANELS[key];
+      if (!url) return false;
+      setActiveTab(key);
+      currentPanel = key;
+      statusMsg.textContent = 'panel: ' + key;
+      history.replaceState(null, '', '#' + key);
+      const resp = await fetch(url);
+      const html = await resp.text();
+      appendBlock(null, html);
+      initKbSearch();
+      return true;
+    }
+
+    // ── Autocomplete ────────────────────────────────────────
+
+    function renderSuggestions(q) {
+      const matches = CMD_LIST.filter(c => c.name.startsWith(q)).slice(0, 7);
+      if (!matches.length) { hideSuggestions(); return; }
+      sugFocus = -1;
+      sugBox.innerHTML = matches.map(c =>
+        `<button type="button" class="sug-item" data-cmd="${c.name}">` +
+        `<span class="sug-name">${c.name}</span>` +
+        `<span class="sug-desc">${c.desc}</span>` +
+        `</button>`
+      ).join('');
+      sugBox.style.display = 'flex';
+      sugBox.querySelectorAll('.sug-item').forEach(btn => {
+        btn.addEventListener('mousedown', e => {
+          e.preventDefault();
+          cmdInput.value = btn.dataset.cmd;
+          hideSuggestions();
+          cmdInput.focus();
+        });
+      });
+    }
+
+    function hideSuggestions() {
+      sugBox.style.display = 'none';
+      sugBox.innerHTML = '';
+      sugFocus = -1;
+    }
+
+    function moveSugFocus(dir) {
+      const items = sugBox.querySelectorAll('.sug-item');
+      if (!items.length) return;
+      items.forEach(i => i.classList.remove('focused'));
+      sugFocus = (sugFocus + dir + items.length) % items.length;
+      items[sugFocus].classList.add('focused');
+      cmdInput.value = items[sugFocus].dataset.cmd;
+    }
+
+    // ── Command execution ────────────────────────────────────
+
+    function executeCmd(raw) {
+      if (!raw) return;
+      cmdHistory.unshift(raw);
+      historyIdx = -1;
+
+      const navKey = NAV[raw];
+      if (navKey) { loadPanel(navKey); return; }
+
+      const [cmd, ...rest] = raw.split(/\s+/);
+      const arg = rest.join(' ');
+
+      function out(html) { appendBlock(raw, html); }
+      function status(msg) { statusMsg.textContent = msg; }
+      function inline(msg) {
+        appendBlock(raw, `<p style="color:var(--muted);font-size:0.875rem;margin:0;">${msg}</p>`);
+      }
+
+      switch (cmd) {
+        case 'help':
+          out(renderHelp());
+          status('help');
+          setActiveTab(null);
+          break;
+
+        case 'ls':
+          out(renderLs());
+          status('ls');
+          setActiveTab(null);
+          break;
+
+        case 'pwd':
+          inline('~/' + currentPanel);
+          break;
+
+        case 'whoami':
+          inline('DrunkLeen — github.com/drunkleen — snape@drunkleen.com');
+          break;
+
+        case 'date':
+          inline(new Date().toLocaleString('en-US', {
+            weekday: 'short', year: 'numeric', month: 'short',
+            day: 'numeric', hour: '2-digit', minute: '2-digit'
+          }));
+          break;
+
+        case 'uname':
+          inline('Linux x86_64 Hyprland/Wayland — Leenium/Arch');
+          break;
+
+        case 'uptime': {
+          const s = Math.floor((Date.now() - pageStart) / 1000);
+          inline(`up ${Math.floor(s/60)}m ${s%60}s`);
+          break;
+        }
+
+        case 'version':
+        case 'ver':
+          inline('Leenium 2026.04 — fork of Omarchy — MIT');
+          break;
+
+        case 'clear':
+          termOutput.innerHTML = '';
+          status('cleared.');
+          break;
+
+        case 'history':
+          out(renderHistory());
+          status('history');
+          setActiveTab(null);
+          break;
+
+        case 'links':
+        case 'link':
+          out(renderLinks());
+          status('links');
+          setActiveTab(null);
+          break;
+
+        case 'tree':
+          out(renderTree());
+          status('tree');
+          setActiveTab(null);
+          break;
+
+        case 'alias':
+          out(renderAlias());
+          status('aliases');
+          setActiveTab(null);
+          break;
+
+        case 'neofetch':
+        case 'fastfetch':
+          out(renderNeofetch());
+          status('neofetch');
+          setActiveTab(null);
+          break;
+
+        case 'echo':
+          inline(arg || '');
+          break;
+
+        case 'which':
+          if (!arg) { inline('which: missing operand'); break; }
+          const t = NAV[arg];
+          inline(t ? `${arg} → panel:${t}` : `${arg}: not found`);
+          break;
+
+        case 'cat': {
+          const target = NAV[arg] || NAV[arg.replace('.html','')];
+          if (target) loadPanel(target);
+          else inline('cat: try: cat about, cat install, cat manual');
+          break;
+        }
+
+        case 'man':
+          if (arg) loadPanel('manual');
+          else inline('man: try: man leenium');
+          break;
+
+        case 'sudo':
+          inline(raw.includes('rm') && raw.includes('-rf')
+            ? 'sudo rm -rf /: nice try. very nice try.'
+            : "sudo: permission denied. (you're in a browser)");
+          break;
+
+        case 'exit':
+        case 'quit':
+          inline("there's no escape.");
+          break;
+
+        case 'reboot':
+          inline('rebooting...');
+          setTimeout(() => window.location.reload(), 800);
+          break;
+
+        case 'pacman':
+        case 'yay':
+        case 'paru':
+          inline(`${cmd}: use leenium-update instead`);
+          break;
+
+        case 'vim':
+        case 'nvim':
+          inline('try Super+E once you install leenium');
+          break;
+
+        case 'firefox':
+        case 'brave':
+        case 'chromium':
+          inline('browser: Super+B (after install)');
+          break;
+
+        case 'curl':
+        case 'wget':
+          inline(`${cmd}: not here. check the install tab.`);
+          break;
+
+        case 'ssh':
+          inline('no shell here. check github.com/drunkleen');
+          break;
+
+        case 'hyprctl':
+          inline('hyprctl: not in a browser. install leenium first.');
+          break;
+
+        case 'leenium-update':
+          loadPanel('repos');
+          break;
+
+        case 'hack':
+          out(renderHack());
+          status('access granted.');
+          setActiveTab(null);
+          break;
+
+        default:
+          inline(`command not found: ${cmd}. type 'help' for commands.`);
+      }
+    }
+
+    // ── Renderers ────────────────────────────────────────────
+
+    function row(name, desc) {
+      return `<div style="display:flex;gap:12px;padding:5px 0;border-bottom:1px solid rgba(24,48,63,0.4);">` +
+        `<span style="color:var(--accent);min-width:160px;flex-shrink:0;">${name}</span>` +
+        `<span style="color:var(--muted);font-size:0.875rem;">${desc}</span></div>`;
+    }
+
+    function promptLine(cmd) {
+      return `<div class="prompt-line"><span class="ps">user@leenium:~$</span><span class="cmd">${cmd}</span></div>`;
+    }
+
+    function renderHelp() {
+      return `
+        <p class="section-label">Navigation</p>
+        <div style="margin-bottom:18px;">
+          ${row('home', 'start page (also: start, index)')}
+          ${row('install', 'how to install (also: download, iso, get)')}
+          ${row('keybindings', 'all shortcuts (also: kb, keys, binds)')}
+          ${row('manual', 'docs (also: docs, hypr, guide)')}
+          ${row('repos', 'source repos (also: github, source, git)')}
+          ${row('about', 'about + credits (also: contact, drunkleen)')}
+        </div>
+        <p class="section-label">Info</p>
+        <div style="margin-bottom:18px;">
+          ${row('help', 'this list')}
+          ${row('ls', 'list panels as clickable chips')}
+          ${row('tree', 'site structure')}
+          ${row('links', 'all external links')}
+          ${row('alias', 'show command aliases')}
+          ${row('history', 'command history')}
+          ${row('neofetch / fastfetch', 'fancy system info')}
+          ${row('pwd', 'show current panel')}
+          ${row('whoami', 'who made this')}
+          ${row('date', 'current date/time')}
+          ${row('uname', 'system info')}
+          ${row('uptime', 'how long page has been open')}
+          ${row('version / ver', 'leenium version')}
+          ${row('echo &lt;text&gt;', 'echo to status bar')}
+          ${row('which &lt;cmd&gt;', 'resolve a command alias')}
+          ${row('cat &lt;panel&gt;', 'open panel by name')}
+          ${row('man &lt;topic&gt;', 'open manual')}
+          ${row('clear', 'clear the content area')}
+        </div>
+        <p class="section-label">Easter eggs</p>
+        <div style="margin-bottom:18px;">
+          ${row('sudo', 'nope')}
+          ${row('sudo rm -rf /', 'very nope')}
+          ${row('exit / quit', "there's no escape")}
+          ${row('reboot', 'actually reloads the page')}
+          ${row('pacman / yay / paru', 'use leenium-update')}
+          ${row('vim / nvim', 'Super+E after install')}
+          ${row('firefox / brave', 'Super+B after install')}
+          ${row('curl / wget', '...')}
+          ${row('ssh', 'check github')}
+          ${row('hyprctl reload', 'not in a browser')}
+          ${row('hack', '???')}
+        </div>
+        <p style="color:var(--muted);font-size:0.8rem;">Keys 1–6 switch tabs. ↑↓ for history. Tab to autocomplete.</p>
+      `;
+    }
+
+    function renderLs() {
+      return `
+        <div class="pill-row" style="margin-bottom:16px;">
+          ${panelKeys.map(k =>
+            `<button type="button" class="pill" onclick="loadPanel('${k}')"
+              style="cursor:pointer;transition:border-color 0.1s,color 0.1s;"
+              onmouseover="this.style.borderColor='var(--bdhi)';this.style.color='var(--accent)'"
+              onmouseout="this.style.borderColor='';this.style.color=''">${k}/</button>`
+          ).join('')}
+        </div>
+        <p style="color:var(--muted);font-size:0.8rem;">click to navigate · or type the name in the prompt</p>
+      `;
+    }
+
+    function renderHistory() {
+      if (!cmdHistory.length)
+        return `<p style="color:var(--muted);">no history yet.</p>`;
+      return `<div>${
+        cmdHistory.map((c, i) =>
+          `<div style="display:flex;gap:14px;padding:4px 0;">` +
+          `<span style="color:var(--muted);min-width:28px;text-align:right;">${cmdHistory.length - i}</span>` +
+          `<span style="color:var(--tx);">${c}</span></div>`
+        ).join('')
+      }</div>`;
+    }
+
+    function renderLinks() {
+      const links = [
+        { name: 'leenium/leenium', url: 'https://github.com/leenium/leenium',     desc: 'main repo'       },
+        { name: 'leenium/iso',     url: 'https://github.com/leenium/iso',         desc: 'ISO builder'     },
+        { name: 'leenium (org)',   url: 'https://github.com/leenium',             desc: 'github org'      },
+        { name: 'omarchy',         url: 'https://github.com/basecamp/omarchy',    desc: 'upstream fork'   },
+        { name: 'drunkleen',       url: 'https://github.com/drunkleen',           desc: 'author'          },
+        { name: 'install manual',  url: 'manual/install/',                        desc: 'install guide'   },
+        { name: 'post-install',    url: 'manual/post-install/',                   desc: 'after install'   },
+        { name: 'troubleshooting', url: 'manual/troubleshooting/',                desc: 'fix stuff'       },
+        { name: 'keybindings',     url: 'manual/keybindings/',                    desc: 'full kb ref'     },
+        { name: 'hypr config',     url: 'manual/hypr/',                           desc: 'hyprland config' },
+      ];
+      return `<div>${links.map(l =>
+        `<div style="display:flex;gap:12px;padding:5px 0;border-bottom:1px solid rgba(24,48,63,0.4);align-items:baseline;">` +
+        `<a href="${l.url}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);min-width:160px;flex-shrink:0;text-decoration:none;"` +
+        ` onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">${l.name} ↗</a>` +
+        `<span style="color:var(--muted);font-size:0.875rem;">${l.desc}</span></div>`
+      ).join('')}</div>`;
+    }
+
+    function renderTree() {
+      return `<pre style="color:var(--tx);margin-bottom:0;">leenium.website/
+├── <span style="color:var(--accent);">home</span>
+├── <span style="color:var(--accent);">install</span>
+├── <span style="color:var(--accent);">keybindings</span>
+├── <span style="color:var(--accent);">manual/</span>
+│   ├── install/
+│   ├── post-install/
+│   ├── keybindings/
+│   ├── hypr/
+│   └── troubleshooting/
+├── <span style="color:var(--accent);">repos</span>
+└── <span style="color:var(--accent);">about</span></pre>`;
+    }
+
+    function renderAlias() {
+      const aliases = Object.entries(NAV).filter(([k, v]) => k !== v).sort(([a],[b]) => a.localeCompare(b));
+      return `<div>${aliases.map(([k, v]) =>
+        `<div style="display:flex;gap:12px;padding:3px 0;">` +
+        `<span style="color:var(--accent);min-width:160px;">${k}</span>` +
+        `<span style="color:var(--muted);">→ panel:${v}</span></div>`
+      ).join('')}</div>`;
+    }
+
+    function renderNeofetch() {
+      const info = [
+        ['OS',       'Arch Linux x86_64'],
+        ['WM',       'Hyprland (Wayland)'],
+        ['Shell',    'zsh'],
+        ['Terminal', 'Alacritty / Ghostty'],
+        ['Bar',      'Waybar'],
+        ['Launcher', 'Walker'],
+        ['Editor',   'Neovim'],
+        ['Author',   'DrunkLeen'],
+        ['Upstream', 'Omarchy (Basecamp)'],
+        ['License',  'MIT'],
+        ['Source',   'github.com/leenium'],
+      ];
+      const colors = ['#ff5f56','#ffbd2e','#27c93f','#4ab8e8','#3de8a0','#a078e8','#e87878','var(--tx)'];
+      return `
+        <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start;">
+          <pre style="margin:0;font-size:clamp(4px,0.85vw,8px);line-height:1.22;flex-shrink:0;color:var(--accent);">                                                                ▄▄▄
+ ▄█        ▄██████▄  ▄██████▄  ▄█    █▄    ▄█   ▄█   █▄    ▄███████████▄
+███       ███       ███       ████   ███  ███  ███   ███  ███   ███   ███
+███       ███       ███       █████  ███  ███  ███   ███  ███   ███   ███
+███      ▄███▄▄▄▄  ▄███▄▄▄▄   ██████ ███  ███  ███   ███  ███   ███   ███
+███      ▀███▀▀▀▀  ▀███▀▀▀▀   ███ ██████  ███  ███   ███  ███   ███   ███
+███       ███       ███       ███  █████  ███  ███   ███  ███   ███   ███
+███       ███       ███       ███   ████  ███  ███   ███  ███   ███   ███
+ ▀██████▀  ▀██████▀  ▀██████▀  ▀█    █▀   █▀    ▀█████▀    ▀█   ███   █▀</pre>
+          <div style="flex:1;min-width:180px;">
+            ${info.map(([k,v]) =>
+              `<div style="display:flex;gap:10px;padding:2px 0;">` +
+              `<span style="color:var(--accent);min-width:74px;font-weight:600;">${k}</span>` +
+              `<span style="color:var(--tx);">${v}</span></div>`
+            ).join('')}
+            <div style="margin-top:10px;display:flex;gap:5px;">
+              ${colors.map(c => `<span style="width:14px;height:14px;border-radius:3px;background:${c};display:inline-block;"></span>`).join('')}
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function renderHack() {
+      const lines = [
+        '> initializing hack sequence...',
+        '> bypassing firewall... done',
+        '> accessing mainframe... done',
+        '> decrypting leenium source...',
+        "> result: it's just shell scripts",
+        '> source: <a href="https://github.com/leenium/leenium" target="_blank" style="color:var(--accent);">github.com/leenium/leenium</a>',
+        '> tip: you could have just cloned the repo',
+      ];
+      return `<style>@keyframes fadeIn{to{opacity:1}}</style>` +
+        lines.map((l, i) =>
+          `<div style="color:var(--accent);padding:2px 0;opacity:0;animation:fadeIn 0.3s ease ${i*0.18}s forwards;">${l}</div>`
+        ).join('');
+    }
+
+    // ── Event listeners ──────────────────────────────────────
+
+    document.querySelectorAll('#tabs .tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        if (tab.dataset.cmd) executeCmd(tab.dataset.cmd);
+        else loadPanel(tab.dataset.panel);
+      });
+    });
+
+    function initKbSearch() {
+      const input = document.getElementById('kbSearch');
+      if (!input) return;
+      input.addEventListener('input', function() {
+        const q = this.value.trim().toLowerCase();
+        document.querySelectorAll('.kbd-table tbody tr').forEach(row => {
+          row.classList.toggle('hidden', q.length > 0 && !row.textContent.toLowerCase().includes(q));
+        });
+        document.querySelectorAll('.kbd-section').forEach(sec => {
+          const hasVisible = sec.querySelector('tbody tr:not(.hidden)');
+          sec.style.display = (q.length === 0 || hasVisible) ? '' : 'none';
+        });
+      });
+    }
+
+    window.addEventListener('hashchange', function() {
+      const hash = location.hash.replace('#', '').trim().toLowerCase();
+      if (PANELS[hash]) loadPanel(hash);
+    });
+
+    cmdInput.addEventListener('input', function() {
+      const q = this.value.trim().toLowerCase();
+      if (q) renderSuggestions(q);
+      else hideSuggestions();
+    });
+
+    cmdInput.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (sugBox.style.display !== 'none') { moveSugFocus(1); return; }
+        if (historyIdx > 0) { historyIdx--; this.value = cmdHistory[historyIdx]; }
+        else if (historyIdx === 0) { historyIdx = -1; this.value = ''; }
+        return;
+      }
+      if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (sugBox.style.display !== 'none') { moveSugFocus(-1); return; }
+        if (historyIdx < cmdHistory.length - 1) {
+          historyIdx++;
+          this.value = cmdHistory[historyIdx];
+          renderSuggestions(this.value);
+        }
+        return;
+      }
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        const items = sugBox.querySelectorAll('.sug-item');
+        if (items.length) {
+          const focused = sugBox.querySelector('.sug-item.focused') || items[0];
+          this.value = focused.dataset.cmd + ' ';
+          hideSuggestions();
+        }
+        return;
+      }
+      if (e.key === 'Escape') {
+        hideSuggestions();
+        this.value = '';
+        historyIdx = -1;
+        return;
+      }
+      if (e.key !== 'Enter') return;
+      const raw = this.value.trim().toLowerCase();
+      this.value = '';
+      hideSuggestions();
+      historyIdx = -1;
+      executeCmd(raw);
+    });
+
+    cmdInput.addEventListener('blur', () => setTimeout(hideSuggestions, 150));
+
+    window.addEventListener('keydown', function(e) {
+      if (e.target.id === 'cmdInput') return;
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      const idx = parseInt(e.key, 10) - 1;
+      if (idx >= 0 && idx < panelKeys.length) loadPanel(panelKeys[idx]);
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const hash = location.hash.replace('#', '').trim().toLowerCase();
+      loadPanel(PANELS[hash] ? hash : 'home');
+    });
+  </script>
+</body>
+</html>

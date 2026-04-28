@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post-Install Guide — Leenium</title>
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div class="wrapper">
+
+    <header class="top">
+      <div class="chrome">
+        <div class="dots" aria-hidden="true">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        </div>
+        <strong>post-install</strong>
+        <span>first boot actions</span>
+      </div>
+      <div class="top-body">
+        <span class="eyebrow">First Boot</span>
+        <h1 class="title">Leenium <span class="title-accent">Post-Install Guide</span></h1>
+        <p class="subtitle">What Leenium does automatically on first login, what to do next, and which optional setup commands matter once the system is already usable.</p>
+        <nav class="nav">
+          <a href="../">Manual Home</a>
+          <a href="../../">leenium.org</a>
+          <a href="../troubleshooting/">Troubleshooting</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="section">
+      <h2>What Runs Automatically</h2>
+      <p>On first login, Hyprland autostart runs <code>leenium-cmd-first-run</code> once, triggered by this marker:</p>
+      <pre>~/.local/state/leenium/first-run.mode</pre>
+      <div class="columns-2">
+        <div class="mini-card">
+          <h3>System setup</h3>
+          <ul>
+            <li>Power profile selection</li>
+            <li>Battery monitor timer setup</li>
+            <li>UFW defaults and Docker integration</li>
+            <li><code>/etc/resolv.conf</code> resolver setup</li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <h3>Desktop cleanup</h3>
+          <ul>
+            <li>GNOME interface defaults</li>
+            <li>Icon cache refresh</li>
+            <li>Elephant user service activation</li>
+            <li>Installer sudoers cleanup and critical notifications</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Immediate Actions</h2>
+      <ol>
+        <li>Connect networking if needed with <code>leenium-launch-wifi</code></li>
+        <li>Run a full update with <code>leenium-update</code></li>
+        <li>Open the keybindings cheatsheet with <code>Super + K</code></li>
+        <li>Check theme and font state with <code>leenium-theme-list</code> and <code>leenium-font-list</code></li>
+      </ol>
+      <div class="callout">
+        <p>If the machine feels "mostly installed but slightly off," run <code>leenium-update</code> before changing anything. Stale package state causes most false alarms.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Optional Setup</h2>
+      <div class="pill-row">
+        <span class="pill"><code>leenium-setup-fingerprint</code></span>
+        <span class="pill"><code>leenium-setup-fido2</code></span>
+        <span class="pill"><code>leenium-install-dev-env</code></span>
+        <span class="pill"><code>leenium-install-terminal</code></span>
+        <span class="pill"><code>leenium-install-vscode</code></span>
+        <span class="pill"><code>leenium-install-docker-dbs</code></span>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>If First Boot Did Not Finish</h2>
+      <p>Manually re-run the first-run sequence:</p>
+      <pre>leenium-cmd-first-run</pre>
+      <p>Then continue with the <a href="../troubleshooting/">Troubleshooting</a> chapter if the result still looks wrong.</p>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-links">
+        <a href="../">Manual Home</a>
+        <a href="../install/">Install Manual</a>
+        <a href="../troubleshooting/">Troubleshooting</a>
+        <a href="../../">leenium.org</a>
+      </div>
+    </footer>
+
+  </div>
+</body>
+</html>

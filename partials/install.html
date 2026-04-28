@@ -1,0 +1,100 @@
+<div class="prompt-line">
+  <span class="ps">user@leenium:~$</span>
+  <span class="cmd">install</span>
+</div>
+
+<div class="callout" style="margin-bottom:22px;">
+  <p>No pre-built ISO yet — you build it yourself or run the installer on existing Arch. Three ways to do it.</p>
+</div>
+
+<!-- Method 1 -->
+<div class="method-block">
+  <div class="method-header">
+    <h3>Method 1 — Build the ISO yourself</h3>
+    <span class="badge wipe">Wipes drive</span>
+  </div>
+  <div class="method-body">
+    <p>Needs Docker. Builds a bootable image that handles partitioning, base Arch, and Leenium in one shot. Flash it, boot it, done.</p>
+    <pre><code># Requires Docker
+git clone https://github.com/leenium/iso
+cd iso
+make build
+
+# Flash to USB (replace /dev/sdX)
+dd if=release/leenium-*.iso of=/dev/sdX bs=4M status=progress conv=fsync</code></pre>
+    <p style="margin-top:12px;margin-bottom:0;">Boot from USB and follow the installer. Drive gets wiped and partitioned automatically.</p>
+  </div>
+</div>
+
+<!-- Method 2 -->
+<div class="method-block">
+  <div class="method-header">
+    <h3>Method 2 — From a live Arch ISO</h3>
+    <span class="badge wipe">Wipes drive</span>
+  </div>
+  <div class="method-body">
+    <p>Boot the official Arch ISO, clone leenium at the live shell, run the installer. It handles disk setup from there.</p>
+    <pre><code># From the Arch live shell:
+git clone https://github.com/leenium/leenium
+cd leenium
+chmod +x install.sh
+./install.sh</code></pre>
+    <div class="callout warn" style="margin-top:14px;margin-bottom:0;">
+      <p>Drive gets wiped. Back up anything you care about first.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Method 3 -->
+<div class="method-block">
+  <div class="method-header">
+    <h3>Method 3 — On top of an existing Arch install</h3>
+    <span class="badge safe">Preserves partitions</span>
+  </div>
+  <div class="method-body">
+    <p>Already have Arch set up? Run Leenium on top. Use <code>archinstall</code> for a minimal base if you don't have one yet — pick btrfs, limine, no desktop profile.</p>
+    <pre><code># archinstall settings:
+#   Filesystem:  btrfs
+#   Bootloader:  limine
+#   Profile:     minimal (no desktop)
+#   User:        non-root with sudo
+archinstall</code></pre>
+    <p>After rebooting into Arch:</p>
+    <pre><code>git clone https://github.com/leenium/leenium
+cd leenium
+chmod +x install.sh
+./install.sh</code></pre>
+    <p style="margin-top:12px;margin-bottom:0;">Partitions stay. Leenium just layers on top.</p>
+  </div>
+</div>
+
+<hr class="divider">
+
+<p class="section-label" style="margin-bottom:12px;">What you need (methods 2 + 3)</p>
+<div class="grid-3" style="margin-bottom:22px;">
+  <div class="card">
+    <h3>System</h3>
+    <p><code>x86_64</code><br>
+       <code>btrfs</code> root<br>
+       <code>limine</code> bootloader<br>
+       Secure Boot off</p>
+  </div>
+  <div class="card">
+    <h3>Environment</h3>
+    <p>Normal user with sudo<br>
+       Internet connection<br>
+       No GNOME or KDE installed<br>
+       Fresh Arch, not a derivative</p>
+  </div>
+  <div class="card">
+    <h3>After install</h3>
+    <p>Log in → <code>Super+K</code> for keybindings<br>
+       <code>leenium-update</code> to get latest<br>
+       <a href="manual/post-install/">post-install guide</a> for what's next</p>
+  </div>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;gap:10px;">
+  <a href="manual/install/" class="btn primary">Install Manual ↗</a>
+  <a href="manual/troubleshooting/" class="btn">Troubleshooting ↗</a>
+</div>
