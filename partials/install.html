@@ -11,7 +11,7 @@
 <div class="method-block">
   <div class="method-header">
     <h3>Method 1 — Build the ISO yourself</h3>
-    <span class="badge wipe">Wipes drive</span>
+    <span class="badge wipe">Wipes Entire Harddisk</span>
   </div>
   <div class="method-body">
     <p>Needs Docker. Builds a bootable image that handles partitioning, base Arch, and Leenium in one shot. Flash it, boot it, done.</p>
@@ -30,7 +30,7 @@ dd if=release/leenium-*.iso of=/dev/sdX bs=4M status=progress conv=fsync</code><
 <div class="method-block">
   <div class="method-header">
     <h3>Method 2 — From a live Arch ISO</h3>
-    <span class="badge wipe">Wipes drive</span>
+    <span class="badge wipe">Wipes Entire Harddisk</span>
   </div>
   <div class="method-body">
     <p>Boot the official Arch ISO, clone leenium at the live shell, run the installer. It handles disk setup from there.</p>
