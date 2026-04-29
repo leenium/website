@@ -94,8 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
       });
       btn.style.borderLeftColor = t.accent;
       // close picker
-      const wrap = document.getElementById('leeniumThemeWrap');
-      if (wrap) wrap.style.display = 'none';
+      picker.style.display = 'none';
     });
     picker.appendChild(btn);
   });

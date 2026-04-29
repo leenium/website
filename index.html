@@ -503,6 +503,20 @@
           <span class="dot g"></span>
         </div>
         <span style="flex:1;text-align:center;font-size:0.82rem;color:var(--muted);letter-spacing:0.06em;font-weight:700;">LEENIUM</span>
+
+        <!-- Theme picker -->
+        <span id="leeniumThemeWrap" style="position:relative;display:inline-flex;align-items:center;flex-shrink:0;">
+          <button type="button"
+            onclick="(function(e){e.stopPropagation();var p=document.getElementById('leeniumThemePicker');p.style.display=p.style.display==='none'?'block':'none';})(event)"
+            style="background:none;border:none;cursor:pointer;font:inherit;font-size:0.72rem;color:var(--muted);letter-spacing:0.05em;padding:0;transition:color 0.1s;"
+            onmouseover="this.style.color='var(--accent)'"
+            onmouseout="this.style.color='var(--muted)'"
+          >theme:<span id="leeniumThemeLabel">leenium</span> ▾</button>
+          <div id="leeniumThemePicker"
+            style="display:none;position:absolute;top:calc(100% + 6px);right:0;min-width:130px;border:1px solid var(--bdr);border-radius:4px;overflow:hidden;z-index:999;box-shadow:0 8px 24px rgba(0,0,0,0.5);">
+          </div>
+        </span>
+
         <a href="https://github.com/leenium" target="_blank" rel="noopener noreferrer"
            style="font-size:0.75rem;color:var(--muted);text-decoration:none;flex-shrink:0;transition:color 0.1s;"
            onmouseover="this.style.color='var(--accent)'"
@@ -540,22 +554,7 @@
       <!-- Status bar -->
       <footer class="win-statusbar">
         <span id="statusMsg" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Ready. Keys 1–6 switch tabs.</span>
-        <span class="right" style="flex-shrink:0;white-space:nowrap;display:flex;align-items:center;gap:8px;">
-
-          <!-- Theme picker -->
-          <span id="leeniumThemeWrap" style="position:relative;display:inline-block;">
-            <button type="button"
-              onclick="(function(){var w=document.getElementById('leeniumThemeWrap'),p=document.getElementById('leeniumThemePicker');p.style.display=p.style.display==='none'?'block':'none';})()"
-              style="background:none;border:none;cursor:pointer;font:inherit;font-size:0.72rem;color:var(--muted);letter-spacing:0.05em;padding:0;transition:color 0.1s;"
-              onmouseover="this.style.color='var(--accent)'"
-              onmouseout="this.style.color='var(--muted)'"
-            >theme:<span id="leeniumThemeLabel">leenium</span> ▾</button>
-            <div id="leeniumThemePicker"
-              style="display:none;position:absolute;bottom:calc(100% + 6px);right:0;min-width:130px;border:1px solid var(--bdr);border-radius:4px;overflow:hidden;z-index:999;box-shadow:0 8px 24px rgba(0,0,0,0.5);">
-            </div>
-          </span>
-
-          <span style="color:var(--muted);">·</span>
+        <span class="right" style="flex-shrink:0;white-space:nowrap;">
           by <a href="mailto:snape@drunkleen.com"
                style="color:var(--muted);text-decoration:none;transition:color 0.1s;"
                onmouseover="this.style.color='var(--accent)'"
