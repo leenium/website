@@ -300,10 +300,10 @@
 
     .hero h1 {
       margin: 0 0 18px;
-      font-size: clamp(3.4rem, 6vw, 6rem);
+      font-size: clamp(3.4rem, 3vw, 6rem);
       line-height: 0.92;
       letter-spacing: -0.05em;
-      max-width: 9.8ch;
+      /* max-width: 9.8ch; */
     }
 
     .hero p {
@@ -1095,7 +1095,7 @@
         <div class="hero-shell">
           <div class="hero-copy">
             <div class="hero-kicker">Leenium Linux Distribution</div>
-            <h1>Arch, refined.</h1>
+            <h1>Boot into a finished system. A finished Arch experience.</h1>
             <p>
               Leenium is an Arch-based desktop built around Hyprland, speed, and a setup that already feels finished.
               Download the ISO and boot into a system with the look, workflow, and tooling already in place.
@@ -1442,6 +1442,9 @@ cd leenium
     }
 
     async function loadReleaseData() {
+      const host = window.location.hostname;
+      const isLocalPreview = host === "127.0.0.1" || host === "localhost";
+
       setReleaseState("checksumState", "", "Loading checksum");
       setReleaseText("checksumValue", "Waiting for CDN response.");
       setReleaseText("checksumMeta", "This reads the published .sha256sum file directly.");
@@ -1452,6 +1455,20 @@ cd leenium
       setReleaseText("releaseFetchNote", "Verification notes");
       setReleaseState("releaseFetchState", "", "Checking CDN");
       setReleaseText("releaseFetchCopy", "The page is loading release metadata and direct verification details.");
+
+      if (isLocalPreview) {
+        setReleaseState("checksumState", "soft", "Local preview mode");
+        setReleaseText("checksumValue", "leenium.iso.sha256sum");
+        setReleaseText("checksumMeta", "Live checksum fetch is skipped on localhost to avoid CORS noise.");
+
+        setReleaseState("signatureState", "soft", "Local preview mode");
+        setReleaseText("signatureValue", "leenium.iso.sig");
+        setReleaseText("signatureMeta", "Live signature fetch is skipped on localhost to avoid CORS noise.");
+
+        setReleaseState("releaseFetchState", "soft", "Local preview mode");
+        setReleaseText("releaseFetchCopy", "Release links work, but inline CDN metadata is disabled in local preview due to browser cross-origin policy.");
+        return;
+      }
 
       const checksumPromise = fetch(RELEASE_URLS.checksum, { cache: "no-store" })
         .then(async (response) => {
