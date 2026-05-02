@@ -1,10 +1,25 @@
 <div class="prompt-line">
   <span class="ps">user@leenium:~$</span>
-  <span class="cmd">install</span>
+  <span class="cmd">download</span>
 </div>
 
 <div class="callout" style="margin-bottom:22px;">
-  <p>No pre-built ISO yet — you build it yourself or run the installer on existing Arch. Three ways to do it.</p>
+  <p>Download the current Leenium ISO and verify it before writing it to USB media.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;">
+    <a href="http://cdn.leenium.org/leenium.iso" class="btn primary" target="_blank" rel="noopener noreferrer">Download ISO</a>
+    <a href="http://cdn.leenium.org/leenium.iso.sha256sum" class="btn" target="_blank" rel="noopener noreferrer">SHA256 File</a>
+    <a href="http://cdn.leenium.org/leenium.iso.sig" class="btn" target="_blank" rel="noopener noreferrer">Signature File</a>
+  </div>
+  <pre style="margin-top:14px;margin-bottom:0;"><code>sha256sum -c leenium.iso.sha256sum
+gpg --verify leenium.iso.sig leenium.iso</code></pre>
+</div>
+
+<div style="margin-bottom:22px;">
+  <img
+    src="assets/demo.png"
+    alt="Leenium desktop screenshot"
+    style="display:block;width:100%;height:auto;border:1px solid var(--bdr);border-radius:12px;background:#030609;"
+  >
 </div>
 
 <!-- Method 1 -->
