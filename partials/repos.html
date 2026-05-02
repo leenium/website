@@ -1,47 +1,21 @@
-<div class="prompt-line">
-  <span class="ps">user@leenium:~$</span>
-  <span class="cmd">repos</span>
-</div>
+<section class="surface" style="margin-bottom:18px;">
+  <div class="section-heading">
+    <h2>Project repos</h2>
+    <p>Leenium splits responsibilities across focused repos: desktop config, ISO, package pipeline, and release site.</p>
+  </div>
+</section>
 
-<div style="display:flex;flex-direction:column;gap:10px;margin-bottom:22px;">
-  <a href="https://github.com/leenium/leenium" target="_blank" rel="noopener noreferrer" class="repo-card">
-    <div class="repo-name">leenium/leenium</div>
-    <div class="repo-url">github.com/leenium/leenium</div>
-    <p class="repo-desc">
-      The main repo. Install pipeline, <code>bin/</code> commands, Hyprland config,
-      themes, desktop entries — everything that runs on your machine.
-      Clone it, run <code>install.sh</code> on a fresh Arch base.
-    </p>
+<div class="card-grid">
+  <a href="https://github.com/leenium/leenium" target="_blank" rel="noopener noreferrer" class="surface card">
+    <h3>leenium/leenium</h3>
+    <p>Main desktop repo: installer, command tooling, Hyprland config, and shipped defaults.</p>
   </a>
-
-  <a href="https://github.com/leenium/iso" target="_blank" rel="noopener noreferrer" class="repo-card">
-    <div class="repo-name">leenium/iso</div>
-    <div class="repo-url">github.com/leenium/iso</div>
-    <p class="repo-desc">
-      Builds the bootable ISO with Docker + ArchISO. <code>make build</code> to build,
-      <code>make boot</code> to test in a VM. The ISO does disk setup and kicks off
-      the leenium install without any manual steps.
-    </p>
+  <a href="https://github.com/leenium/iso" target="_blank" rel="noopener noreferrer" class="surface card">
+    <h3>leenium/iso</h3>
+    <p>Builds and tests the bootable Leenium ISO image.</p>
   </a>
-
-  <a href="https://github.com/leenium/leenium.nvim" target="_blank" rel="noopener noreferrer" class="repo-card">
-    <div class="repo-name">leenium/leenium.nvim</div>
-    <div class="repo-url">github.com/leenium/leenium.nvim</div>
-    <p class="repo-desc">
-      Neovim colorscheme. Deep navy-black background with teal-green accents.
-      Install with any plugin manager: <code>"leenium/leenium.nvim"</code>.
-    </p>
-  </a>
-
-  <a href="https://github.com/leenium" target="_blank" rel="noopener noreferrer" class="repo-card">
-    <div class="repo-name">leenium (org)</div>
-    <div class="repo-url">github.com/leenium</div>
-    <p class="repo-desc">
-      Everything else lives here.
-    </p>
+  <a href="https://github.com/leenium" target="_blank" rel="noopener noreferrer" class="surface card">
+    <h3>Leenium org</h3>
+    <p>Entry point to all public repositories and release-facing work.</p>
   </a>
 </div>
-
-<hr class="divider">
-
-

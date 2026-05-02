@@ -1,11 +1,30 @@
-<section class="view">
-  <div class="line"><span class="prompt">$</span> hypr</div>
-  <p>Load order:</p>
-  <ul>
-    <li><code>~/.local/share/leenium/default/hypr</code> (base defaults)</li>
-    <li><code>~/.config/leenium/current/theme/hyprland.conf</code> (theme layer)</li>
-    <li><code>~/.config/hypr/*.conf</code> (user overrides)</li>
-  </ul>
-  <br>
-  <p>Reference: <a href="manual/hypr/">manual/hypr</a></p>
+<section class="surface" style="margin-bottom:18px;">
+  <div class="section-heading">
+    <h2>Hyprland layering</h2>
+    <p>Edit user overrides, not project-owned defaults. This keeps updates and local tweaks from fighting each other.</p>
+  </div>
+</section>
+
+<div class="split">
+  <article class="surface">
+    <h3>Load order</h3>
+    <ul>
+      <li><code>~/.local/share/leenium/default/hypr</code> (baseline)</li>
+      <li><code>~/.config/leenium/current/theme/hyprland.conf</code> (theme layer)</li>
+      <li><code>~/.config/hypr/*.conf</code> (user overrides)</li>
+    </ul>
+  </article>
+  <article class="surface">
+    <h3>Useful commands</h3>
+    <pre><code>hyprctl reload
+leenium-menu-keybindings --print
+leenium-reinstall-configs</code></pre>
+    <div class="callout warn">Use reinstall commands intentionally; they can reset config state.</div>
+  </article>
+</div>
+
+<section class="surface" style="margin-top:18px;">
+  <div class="hero-actions">
+    <a href="manual/hypr/" class="button primary">Open full Hypr reference</a>
+  </div>
 </section>

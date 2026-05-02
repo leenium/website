@@ -1,56 +1,36 @@
-<div class="prompt-line">
-  <span class="ps">user@leenium:~$</span>
-  <span class="cmd">home</span>
+<section class="surface" style="margin-bottom:18px;">
+  <div class="section-heading">
+    <h2>Arch, refined for daily use.</h2>
+    <p>Leenium ships the desktop and workflow already assembled: installer, bindings, theming, and practical system defaults.</p>
+  </div>
+  <div class="hero-meta" style="margin-top:0;">
+    <span class="pill">Arch base</span>
+    <span class="pill">Hyprland workflow</span>
+    <span class="pill">Keyboard-first defaults</span>
+    <span class="pill">Ready-to-boot ISO</span>
+  </div>
+</section>
+
+<div class="card-grid" style="margin-bottom:18px;">
+  <article class="surface card">
+    <h3>Desktop that feels finished</h3>
+    <p>Hyprland, Waybar, Walker, terminal, lockscreen, notifications, and theme system are configured as one stack.</p>
+  </article>
+  <article class="surface card">
+    <h3>Real command surface</h3>
+    <p><code>leenium-*</code> commands cover update, recovery, screenshots, theme controls, and routine maintenance.</p>
+  </article>
+  <article class="surface card">
+    <h3>Predictable install flow</h3>
+    <p>Staged pipeline keeps behavior consistent: preflight, packaging, config, login integration, post-install.</p>
+  </article>
 </div>
 
-<p style="color:var(--muted);font-size:0.9375rem;line-height:1.72;margin:0 0 22px;max-width:70ch;">
-  I got tired of setting up Hyprland from scratch every time, so I wrote this.
-  Run it after <code>archinstall</code> and you get a full desktop — packages, dotfiles,
-  Waybar, themes, all of it — without spending a weekend on config files.
-</p>
-
-<div class="grid-2" style="margin-bottom:22px;">
-  <div class="card">
-    <h3>Hyprland, properly set up</h3>
-    <p>Workspaces 1–10, scratchpad, tiling groups, floating, pin. Gaps and borders actually configured. <code>Super+Enter</code> opens a terminal, not a browser.</p>
+<section class="surface">
+  <h3 style="margin-top:0;">Install pipeline</h3>
+  <pre><code>preflight -> packaging -> config -> login -> post-install</code></pre>
+  <div class="hero-actions">
+    <a href="#download" class="button primary">Download ISO</a>
+    <a href="manual/" class="button secondary">Open manual</a>
   </div>
-  <div class="card">
-    <h3>Mouse is optional</h3>
-    <p>Browser, files, editor, music, messaging, passwords, AI — all bound. If you're reaching for the mouse you probably just forgot the shortcut.</p>
-  </div>
-  <div class="card">
-    <h3>Theming that actually works</h3>
-    <p><code>leenium-theme-set</code>, <code>leenium-font-set</code>, <code>leenium-bg-set</code>. One command and Waybar, terminal, Hyprland, lock screen all update together.</p>
-  </div>
-  <div class="card">
-    <h3>leenium-* commands</h3>
-    <p>Update, screenshot, screen record, restart components, toggle nightlight, share — all just <code>leenium-*</code> in PATH. No hunting for scripts.</p>
-  </div>
-</div>
-
-<p class="section-label">Install pipeline</p>
-<pre style="margin-bottom:22px;">preflight → packaging → config → login → post-install</pre>
-
-<p class="section-label" style="margin-bottom:10px;">Installed stack</p>
-<div class="pill-row" style="margin-bottom:22px;">
-  <span class="pill">hyprland</span>
-  <span class="pill">waybar</span>
-  <span class="pill">walker</span>
-  <span class="pill">alacritty</span>
-  <span class="pill">neovim</span>
-  <span class="pill">mako</span>
-  <span class="pill">hypridle</span>
-  <span class="pill">hyprlock</span>
-  <span class="pill">plymouth</span>
-  <span class="pill">sddm</span>
-  <span class="pill">btrfs</span>
-  <span class="pill">limine</span>
-  <span class="pill">pipewire</span>
-  <span class="pill">networkmanager</span>
-</div>
-
-<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
-  <a href="#download" class="btn primary">Get Leenium →</a>
-  <a href="#keybindings" class="btn">Keybindings</a>
-  <a href="manual/" class="btn">Manual ↗</a>
-</div>
+</section>

@@ -11,106 +11,83 @@
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-  <div class="wrapper">
-
-    <header class="top">
-      <div class="chrome">
-        <div class="dots" aria-hidden="true">
-          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+  <main>
+    <div class="shell">
+      <section class="hero">
+        <div class="hero-kicker">Recovery</div>
+        <h1>Logs first, targeted fixes second.</h1>
+        <p>Use the smallest recovery command that matches the failure mode. Save broad resets for last.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="../install/">Install manual</a>
+          <a class="button secondary" href="../">Manual Home</a>
         </div>
-        <strong>troubleshooting</strong>
-        <span>logs and recovery</span>
-      </div>
-      <div class="top-body">
-        <span class="eyebrow">Recovery</span>
-        <h1 class="title">Leenium <span class="title-accent">Troubleshooting</span></h1>
-        <p class="subtitle">When something breaks: logs first, smallest targeted recovery command second, broad resets last. Follow that order every time.</p>
-        <nav class="nav">
-          <a href="../">Manual Home</a>
-          <a href="../../">leenium.org</a>
-          <a href="../install/">Install Manual</a>
-        </nav>
-      </div>
-    </header>
+      </section>
 
-    <section class="section">
-      <h2>Install Failures</h2>
-      <p>Always start here for install-time issues:</p>
-      <pre>/var/log/archinstall/install.log
-/var/log/leenium-install.log</pre>
-      <p>To share the failure for support:</p>
-      <pre>leenium-upload-log install</pre>
-    </section>
+      <section class="split">
+        <article class="surface">
+          <h2>Install-time failures</h2>
+          <pre><code>/var/log/archinstall/install.log
+/var/log/leenium-install.log
 
-    <section class="section">
-      <h2>First-Run Problems</h2>
-      <p>If the system boots but first-login automation did not complete:</p>
-      <pre>leenium-first-run</pre>
-      <p>Then verify the first-run marker state:</p>
-      <pre>cat ~/.local/state/leenium/first-run.mode</pre>
-    </section>
+leenium-upload-log install</code></pre>
+        </article>
+        <article class="surface">
+          <h2>First-run recovery</h2>
+          <pre><code>leenium-first-run
+cat ~/.local/state/leenium/first-run.mode</code></pre>
+        </article>
+      </section>
 
-    <section class="section">
-      <h2>UI Component Recovery</h2>
-      <div class="columns-2">
-        <div class="mini-card">
-          <h3>Restart services</h3>
+      <section class="surface">
+        <h2>UI component recovery</h2>
+        <ul>
+          <li><code>leenium-restart-waybar</code></li>
+          <li><code>leenium-restart-walker</code></li>
+          <li><code>leenium-restart-mako</code></li>
+          <li><code>leenium-reinstall-configs</code></li>
+          <li><code>leenium-plymouth-reset</code></li>
+        </ul>
+        <div class="callout warn"><code>leenium-reinstall-configs</code> can overwrite local customizations. Use only when config drift is likely.</div>
+      </section>
+
+      <section class="split">
+        <article class="surface">
+          <h2>Update recovery</h2>
           <ul>
-            <li><code>leenium-restart-waybar</code></li>
-            <li><code>leenium-restart-walker</code></li>
-            <li><code>leenium-restart-mako</code></li>
+            <li><code>leenium-update</code></li>
+            <li><code>leenium-update-analyze-logs</code></li>
+            <li><code>leenium-reinstall</code></li>
           </ul>
-        </div>
-        <div class="mini-card">
-          <h3>Reapply config</h3>
-          <ul>
-            <li><code>leenium-reinstall-configs</code></li>
-            <li><code>leenium-plymouth-reset</code> — revert unlock screen to theme default</li>
-          </ul>
-        </div>
-      </div>
-      <div class="callout warn">
-        <p><code>leenium-reinstall-configs</code> is a reset-style tool. Use it when config drift is the likely cause, not as the first response to every UI problem. It can overwrite local customizations.</p>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Update Recovery</h2>
-      <ul>
-        <li><code>leenium-update</code> — normal update path</li>
-        <li><code>leenium-update-analyze-logs</code> — when update logs mention initramfs or related warnings</li>
-        <li><code>leenium-reinstall</code> — when the baseline package state needs to be forced back into line</li>
-      </ul>
-    </section>
-
-    <section class="section">
-      <h2>Collect Debug Information</h2>
-      <pre>leenium-debug
+        </article>
+        <article class="surface">
+          <h2>Collect debug output</h2>
+          <pre><code>leenium-debug
 leenium-debug --print
 leenium-upload-log this-boot
-leenium-upload-log last-boot</pre>
-    </section>
+leenium-upload-log last-boot</code></pre>
+        </article>
+      </section>
 
-    <section class="section">
-      <h2>Recovery Order</h2>
-      <ol>
-        <li>Read the relevant log file first</li>
-        <li>Run the smallest targeted recovery command</li>
-        <li>Collect debug output before any broad resets</li>
-        <li>Use reinstall-style commands only after targeted options are exhausted</li>
-      </ol>
-    </section>
+      <section class="surface">
+        <h2>Recovery order</h2>
+        <ol>
+          <li>Read the relevant log file</li>
+          <li>Run the smallest targeted fix</li>
+          <li>Collect debug info before broad reset commands</li>
+          <li>Escalate to reinstall-style commands only when needed</li>
+        </ol>
+      </section>
 
-    <footer class="footer">
-      <div class="footer-links">
-        <a href="../">Manual Home</a>
-        <a href="../install/">Install Manual</a>
-        <a href="../post-install/">Post-Install Guide</a>
-        <a href="../../">leenium.org</a>
-      </div>
-    </footer>
-
-  </div>
+      <footer class="footer">
+        <div>Operational recovery reference for Leenium runtime issues.</div>
+        <div class="footer-links">
+          <a href="../">Manual Home</a>
+          <a href="../post-install/">Post-Install</a>
+          <a href="../../">leenium.org</a>
+        </div>
+      </footer>
+    </div>
+  </main>
   <script src="../../scripts/theme.js"></script>
 </body>
 </html>

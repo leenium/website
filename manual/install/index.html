@@ -11,123 +11,80 @@
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-  <div class="wrapper">
-
-    <header class="top">
-      <div class="chrome">
-        <div class="dots" aria-hidden="true">
-          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+  <main>
+    <div class="shell">
+      <section class="hero">
+        <div class="hero-kicker">Install</div>
+        <h1>Leenium install, stage by stage.</h1>
+        <p>Use this when validating installer behavior or diagnosing failures. It maps assumptions, stage order, and fast triage.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="../troubleshooting/">Open Troubleshooting</a>
+          <a class="button secondary" href="../">Manual Home</a>
+          <a class="button secondary" href="../../">leenium.org</a>
         </div>
-        <strong>install-manual</strong>
-        <span>pipeline overview</span>
-      </div>
-      <div class="top-body">
-        <span class="eyebrow">Install</span>
-        <h1 class="title">Leenium <span class="title-accent">Install Manual</span></h1>
-        <p class="subtitle">What the installer expects, what it does at each stage, and where to look when something fails. The shortest reliable map of the Leenium install pipeline.</p>
-        <nav class="nav">
-          <a href="../">Manual Home</a>
-          <a href="../../">leenium.org</a>
-          <a href="../troubleshooting/">Troubleshooting</a>
-          <a href="../post-install/">Post-Install</a>
-        </nav>
-      </div>
-    </header>
+      </section>
 
-    <section class="stats">
-      <div class="stat">
-        <strong>5</strong>
-        install stages
-      </div>
-      <div class="stat">
-        <strong>2</strong>
-        primary log files
-      </div>
-      <div class="stat">
-        <strong>1</strong>
-        completion marker
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-intro">
-        <div>
-          <h2>Scope</h2>
-          <p>Leenium is the post-<code>archinstall</code> system layer. The main entrypoint is <code>install.sh</code>, designed to run from <code>~/.local/share/leenium</code> (or the cloned repo directory) on a base Arch system.</p>
-        </div>
-      </div>
-      <div class="callout">
-        <p>If this page and the source code ever disagree, the code is authoritative. Update the docs.</p>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Preflight Requirements</h2>
-      <p>The installer checks these conditions before touching anything:</p>
-      <div class="columns-2">
-        <div class="mini-card">
-          <h3>System</h3>
+      <section class="split">
+        <article class="surface">
+          <h2>Preflight requirements</h2>
           <ul>
-            <li>Vanilla Arch Linux</li>
-            <li><code>x86_64</code> architecture</li>
-            <li><code>btrfs</code> root filesystem</li>
-            <li><code>limine</code> bootloader present</li>
+            <li>Vanilla Arch Linux on <code>x86_64</code> with <code>btrfs</code> and <code>limine</code></li>
+            <li>Normal sudo user (not root) and Secure Boot disabled</li>
+            <li>No pre-installed GNOME/KDE desktop state</li>
+            <li>No derivative distro baseline (Manjaro, Garuda, etc.)</li>
           </ul>
-        </div>
-        <div class="mini-card">
-          <h3>Environment</h3>
+          <div class="callout">If docs and source ever diverge, source is authoritative and docs should be updated.</div>
+        </article>
+        <article class="surface">
+          <h2>Quick stats</h2>
           <ul>
-            <li>Normal user with sudo, not root</li>
-            <li>Secure Boot disabled</li>
-            <li>No pre-installed GNOME or KDE</li>
-            <li>No derivative distro state (Manjaro, Garuda, etc.)</li>
+            <li>5 install stages</li>
+            <li>2 primary log files</li>
+            <li>1 completion marker</li>
           </ul>
-        </div>
-      </div>
-    </section>
+        </article>
+      </section>
 
-    <section class="section">
-      <h2>Install Stages</h2>
-      <ol>
-        <li><code>preflight</code> — guard checks, logging setup, migration execution, first-run marker prep, mkinitcpio hook deferral</li>
-        <li><code>packaging</code> — base packages, fonts, Neovim, icons, webapps, TUIs, hardware-specific package sets</li>
-        <li><code>config</code> — copy defaults, apply theme setup, deploy app and shell config, run hardware fixes</li>
-        <li><code>login</code> — Plymouth, SDDM, Limine, Snapper, mkinitcpio integration</li>
-        <li><code>post-install</code> — hibernation setup, pacman cleanup, reboot permissions, final completion state</li>
-      </ol>
-    </section>
+      <section class="surface">
+        <h2>Install stages</h2>
+        <ol>
+          <li><code>preflight</code> - guard checks, migration, log setup, marker prep</li>
+          <li><code>packaging</code> - base packages, fonts, Neovim, hardware package sets</li>
+          <li><code>config</code> - defaults, theme setup, app/shell configs, hardware fixes</li>
+          <li><code>login</code> - Plymouth, SDDM, Limine, Snapper, mkinitcpio integration</li>
+          <li><code>post-install</code> - hibernation setup, cleanup, completion state</li>
+        </ol>
+      </section>
 
-    <section class="section">
-      <h2>Logs and Completion Markers</h2>
-      <p>The first response to any install failure should be log review, not trial-and-error changes.</p>
-      <pre>/var/log/leenium-install.log
+      <section class="surface">
+        <h2>Logs and completion markers</h2>
+        <p>When an install fails, check logs first before trying broad changes.</p>
+        <pre><code>/var/log/leenium-install.log
 /var/log/archinstall/install.log
-/var/tmp/leenium-install-completed</pre>
-      <div class="callout warn">
-        <p>Every stage script runs through logging wrappers. If a stage fails, the install log will show which script failed with timestamps. Start there before changing anything.</p>
-      </div>
-    </section>
+/var/tmp/leenium-install-completed</code></pre>
+      </section>
 
-    <section class="section">
-      <h2>Fast Triage</h2>
-      <ul>
-        <li>Install never starts — check preflight requirements first.</li>
-        <li>Packages fail — inspect <code>/var/log/archinstall/install.log</code>.</li>
-        <li>Leenium config fails — inspect <code>/var/log/leenium-install.log</code>.</li>
-        <li>Install finished but first login looks wrong — see <a href="../post-install/">Post-Install Guide</a>.</li>
-      </ul>
-    </section>
+      <section class="surface">
+        <h2>Fast triage</h2>
+        <ul>
+          <li>Installer does not start -> verify preflight requirements</li>
+          <li>Packages fail -> inspect <code>/var/log/archinstall/install.log</code></li>
+          <li>Config step fails -> inspect <code>/var/log/leenium-install.log</code></li>
+          <li>Boot works but desktop is off -> continue in Post-Install guide</li>
+        </ul>
+        <div class="hero-actions"><a class="button secondary" href="../post-install/">Go to Post-Install</a></div>
+      </section>
 
-    <footer class="footer">
-      <div class="footer-links">
-        <a href="../">Manual Home</a>
-        <a href="../post-install/">Post-Install Guide</a>
-        <a href="../troubleshooting/">Troubleshooting</a>
-        <a href="../../">leenium.org</a>
-      </div>
-    </footer>
-
-  </div>
+      <footer class="footer">
+        <div>Install docs for Leenium operational pipeline.</div>
+        <div class="footer-links">
+          <a href="../">Manual Home</a>
+          <a href="../troubleshooting/">Troubleshooting</a>
+          <a href="../../">leenium.org</a>
+        </div>
+      </footer>
+    </div>
+  </main>
   <script src="../../scripts/theme.js"></script>
 </body>
 </html>

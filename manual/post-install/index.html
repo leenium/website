@@ -11,122 +11,81 @@
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-  <div class="wrapper">
-
-    <header class="top">
-      <div class="chrome">
-        <div class="dots" aria-hidden="true">
-          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+  <main>
+    <div class="shell">
+      <section class="hero">
+        <div class="hero-kicker">First Boot</div>
+        <h1>What happens right after install.</h1>
+        <p>Leenium runs first-login automation once, then expects you to confirm update state and environment basics.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="../troubleshooting/">Recovery commands</a>
+          <a class="button secondary" href="../">Manual Home</a>
         </div>
-        <strong>post-install</strong>
-        <span>first boot actions</span>
-      </div>
-      <div class="top-body">
-        <span class="eyebrow">First Boot</span>
-        <h1 class="title">Leenium <span class="title-accent">Post-Install Guide</span></h1>
-        <p class="subtitle">What Leenium does automatically on first login, what to do next, and which optional setup commands matter once the system is already usable.</p>
-        <nav class="nav">
+      </section>
+
+      <section class="split">
+        <article class="surface">
+          <h2>Automatic first-run behavior</h2>
+          <p>Triggered by marker:</p>
+          <pre><code>~/.local/state/leenium/first-run.mode</code></pre>
+          <ul>
+            <li>Power profile selection and battery monitor setup</li>
+            <li>UFW defaults and Docker network integration</li>
+            <li>Resolver setup for <code>/etc/resolv.conf</code></li>
+            <li>Desktop cleanup, icon cache refresh, service activation</li>
+          </ul>
+        </article>
+        <article class="surface">
+          <h2>Immediate actions</h2>
+          <ul>
+            <li><code>leenium-launch-wifi</code></li>
+            <li><code>leenium-update</code></li>
+            <li><code>Super + K</code> for the keybinding cheat sheet</li>
+            <li><code>leenium-theme-list</code> and <code>leenium-font-list</code></li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="surface">
+        <h2>Appearance controls</h2>
+        <p>Use <code>Super + Space</code> then Appearance, or direct commands:</p>
+        <ul>
+          <li><code>leenium-theme-set &lt;name&gt;</code> and <code>leenium-theme-list</code></li>
+          <li><code>leenium-font-list</code></li>
+          <li>Background selector reads <code>~/Pictures/Wallpapers/</code></li>
+          <li><code>leenium-plymouth-reset</code> resets unlock screen</li>
+        </ul>
+      </section>
+
+      <section class="surface">
+        <h2>Optional setup commands</h2>
+        <div class="hero-meta">
+          <span class="pill"><code>leenium-setup-fingerprint</code></span>
+          <span class="pill"><code>leenium-setup-fido2</code></span>
+          <span class="pill"><code>leenium-install-dev-env</code></span>
+          <span class="pill"><code>leenium-install-terminal</code></span>
+          <span class="pill"><code>leenium-install-vscode</code></span>
+          <span class="pill"><code>leenium-install-docker-dbs</code></span>
+        </div>
+      </section>
+
+      <section class="surface">
+        <h2>If first run did not complete</h2>
+        <pre><code>leenium-first-run</code></pre>
+        <div class="hero-actions"><a class="button secondary" href="../troubleshooting/">Continue to Troubleshooting</a></div>
+      </section>
+
+      <footer class="footer">
+        <div>Post-install guidance for first stable login.</div>
+        <div class="footer-links">
           <a href="../">Manual Home</a>
-          <a href="../../">leenium.org</a>
+          <a href="../install/">Install</a>
           <a href="../troubleshooting/">Troubleshooting</a>
-        </nav>
-      </div>
-    </header>
-
-    <section class="section">
-      <h2>What Runs Automatically</h2>
-      <p>On first login, Hyprland autostart runs <code>leenium-first-run</code> once, triggered by this marker:</p>
-      <pre>~/.local/state/leenium/first-run.mode</pre>
-      <div class="columns-2">
-        <div class="mini-card">
-          <h3>System setup</h3>
-          <ul>
-            <li>Power profile selection</li>
-            <li>Battery monitor timer setup</li>
-            <li>UFW defaults and Docker integration</li>
-            <li><code>/etc/resolv.conf</code> resolver setup</li>
-          </ul>
+          <a href="../../">leenium.org</a>
         </div>
-        <div class="mini-card">
-          <h3>Desktop cleanup</h3>
-          <ul>
-            <li>GNOME interface defaults</li>
-            <li>Icon cache refresh</li>
-            <li>Elephant user service activation</li>
-            <li>Installer sudoers cleanup and critical notifications</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Immediate Actions</h2>
-      <ol>
-        <li>Connect networking if needed with <code>leenium-launch-wifi</code></li>
-        <li>Run a full update with <code>leenium-update</code></li>
-        <li>Open the keybindings cheatsheet with <code>Super + K</code></li>
-        <li>Check theme and font state with <code>leenium-theme-list</code> and <code>leenium-font-list</code></li>
-      </ol>
-      <div class="callout">
-        <p>If the machine feels "mostly installed but slightly off," run <code>leenium-update</code> before changing anything. Stale package state causes most false alarms.</p>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Appearance</h2>
-      <p>All appearance controls live under <code>Super + Space</code> → Appearance, or via the commands below.</p>
-      <div class="columns-2">
-        <div class="mini-card">
-          <h3>Themes &amp; visuals</h3>
-          <ul>
-            <li><code>leenium-theme-set &lt;name&gt;</code> — switch theme</li>
-            <li><code>leenium-theme-list</code> — list available themes</li>
-            <li><code>leenium-font-list</code> — list available fonts</li>
-          </ul>
-        </div>
-        <div class="mini-card">
-          <h3>Backgrounds &amp; unlock</h3>
-          <ul>
-            <li>Appearance → Background — pick from theme or <code>~/Pictures/Wallpapers/</code></li>
-            <li>Appearance → Unlock — set Plymouth unlock screen per theme</li>
-            <li><code>leenium-plymouth-reset</code> — revert to default unlock screen</li>
-          </ul>
-        </div>
-      </div>
-      <div class="callout">
-        <p>Drop your own wallpapers into <code>~/Pictures/Wallpapers/</code> — they appear automatically in the background selector.</p>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Optional Setup</h2>
-      <div class="pill-row">
-        <span class="pill"><code>leenium-setup-fingerprint</code></span>
-        <span class="pill"><code>leenium-setup-fido2</code></span>
-        <span class="pill"><code>leenium-install-dev-env</code></span>
-        <span class="pill"><code>leenium-install-terminal</code></span>
-        <span class="pill"><code>leenium-install-vscode</code></span>
-        <span class="pill"><code>leenium-install-docker-dbs</code></span>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>If First Boot Did Not Finish</h2>
-      <p>Manually re-run the first-run sequence:</p>
-      <pre>leenium-first-run</pre>
-      <p>Then continue with the <a href="../troubleshooting/">Troubleshooting</a> chapter if the result still looks wrong.</p>
-    </section>
-
-    <footer class="footer">
-      <div class="footer-links">
-        <a href="../">Manual Home</a>
-        <a href="../install/">Install Manual</a>
-        <a href="../troubleshooting/">Troubleshooting</a>
-        <a href="../../">leenium.org</a>
-      </div>
-    </footer>
-
-  </div>
+      </footer>
+    </div>
+  </main>
   <script src="../../scripts/theme.js"></script>
 </body>
 </html>

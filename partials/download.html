@@ -1,24 +1,23 @@
-<section class="view">
-  <div class="line"><span class="prompt">$</span> download</div>
-  <div class="download-grid">
-    <article class="download-card primary">
-      <div class="eyebrow">Latest Build</div>
-      <h3>Download the current x86_64 ISO</h3>
-      <p>Leenium is currently published as a single x86_64 image. Download the ISO directly from the CDN, then verify its checksum and signature before writing it to USB media.</p>
-      <div class="download-actions">
-        <a class="download-button" href="http://cdn.leenium.org/leenium.iso" target="_blank" rel="noopener noreferrer">Download ISO</a>
-        <a class="download-button" href="http://cdn.leenium.org/leenium.iso.sha256sum" target="_blank" rel="noopener noreferrer">SHA256 File</a>
-        <a class="download-button" href="http://cdn.leenium.org/leenium.iso.sig" target="_blank" rel="noopener noreferrer">Signature File</a>
+<section class="surface">
+  <div class="section-heading">
+    <h2>Current release</h2>
+    <p>Download the ISO and verify checksum plus signature before flashing to USB.</p>
+  </div>
+
+  <div class="split">
+    <article class="surface" style="background:rgba(255,255,255,0.02);">
+      <h3>Artifacts</h3>
+      <div class="hero-actions">
+        <a class="button primary" href="http://cdn.leenium.org/leenium.iso" target="_blank" rel="noopener noreferrer">Download ISO</a>
+        <a class="button secondary" href="http://cdn.leenium.org/leenium.iso.sha256sum" target="_blank" rel="noopener noreferrer">SHA256 file</a>
+        <a class="button secondary" href="http://cdn.leenium.org/leenium.iso.sig" target="_blank" rel="noopener noreferrer">Signature file</a>
       </div>
-      <div class="download-meta">Artifacts live on <code>cdn.leenium.org</code> and include the ISO, detached signature, and SHA256 checksum file.</div>
     </article>
 
-    <article class="download-card">
-      <div class="eyebrow">Verification</div>
-      <p class="verify-copy">Verify the checksum file:</p>
-      <code class="hash-block">sha256sum -c leenium.iso.sha256sum</code>
-      <p class="verify-copy">Then verify the detached signature:</p>
-      <code class="hash-block">gpg --verify leenium.iso.sig leenium.iso</code>
+    <article class="surface" style="background:rgba(255,255,255,0.02);">
+      <h3>Verify locally</h3>
+      <pre><code>sha256sum -c leenium.iso.sha256sum
+gpg --verify leenium.iso.sig leenium.iso</code></pre>
     </article>
   </div>
 </section>

@@ -1,202 +1,42 @@
-<div class="prompt-line">
-  <span class="ps">user@leenium:~$</span>
-  <span class="cmd">keybindings</span>
-</div>
+<section class="surface" style="margin-bottom:18px;">
+  <div class="section-heading">
+    <h2>Keybindings at a glance</h2>
+    <p>Short preview below. Use the full manual page for complete generated coverage and filtering.</p>
+  </div>
+  <div class="hero-actions">
+    <a href="manual/keybindings/" class="button primary">Open full keybindings</a>
+  </div>
+</section>
 
-<label class="searchbar" for="kbSearch">
-  <span class="hint">$ grep</span>
-  <input id="kbSearch" type="text" autocomplete="off" spellcheck="false"
-         placeholder="filter by shortcut, action, or type…">
-</label>
-
-<div class="kbd-section">
-  <div class="kbd-section-title">Applications</div>
+<section class="surface" style="margin-bottom:18px;">
+  <label class="searchbar" for="kbSearchPreview">
+    <span>Filter</span>
+    <input id="kbSearchPreview" type="text" autocomplete="off" spellcheck="false" placeholder="shortcut, action, or type">
+  </label>
   <table class="kbd-table">
     <thead><tr><th>Shortcut</th><th>Action</th><th>Type</th></tr></thead>
     <tbody>
       <tr><td><code>Super + Enter</code></td><td>Terminal</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Alt + Enter</code></td><td>Tmux</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + E</code></td><td>File manager</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + E</code></td><td>File manager (cwd)</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + B</code></td><td>Browser</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + B</code></td><td>Browser (private)</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + C</code></td><td>VSCode</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + M</code></td><td>Music</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + N</code></td><td>Editor</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + D</code></td><td>Docker</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + T</code></td><td>Telegram</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + G</code></td><td>Signal</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + I</code></td><td>Discord</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + W</code></td><td>Typora</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + Slash</code></td><td>Passwords</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + A</code></td><td>ChatGPT</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + A</code></td><td>Grok</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + C</code></td><td>Calendar</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + M</code></td><td>Email</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + Y</code></td><td>YouTube</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + Alt + G</code></td><td>WhatsApp</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + Ctrl + G</code></td><td>Google Messages</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + P</code></td><td>Google Photos</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + X</code></td><td>X (Twitter)</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + Alt + X</code></td><td>X Post</td><td><code>bindd</code></td></tr>
-    </tbody>
-  </table>
-</div>
-
-<div class="kbd-section">
-  <div class="kbd-section-title">Clipboard</div>
-  <table class="kbd-table">
-    <thead><tr><th>Shortcut</th><th>Action</th><th>Type</th></tr></thead>
-    <tbody>
-      <tr><td><code>Super + C</code></td><td>Universal copy</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + V</code></td><td>Universal paste</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + X</code></td><td>Universal cut</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Ctrl + V</code></td><td>Clipboard manager</td><td><code>bindd</code></td></tr>
-    </tbody>
-  </table>
-</div>
-
-<div class="kbd-section">
-  <div class="kbd-section-title">Media</div>
-  <table class="kbd-table">
-    <thead><tr><th>Shortcut</th><th>Action</th><th>Type</th></tr></thead>
-    <tbody>
-      <tr><td><code>XF86AudioRaiseVolume</code></td><td>Volume up</td><td><code>bindeld</code></td></tr>
-      <tr><td><code>XF86AudioLowerVolume</code></td><td>Volume down</td><td><code>bindeld</code></td></tr>
-      <tr><td><code>XF86AudioMute</code></td><td>Mute</td><td><code>bindeld</code></td></tr>
-      <tr><td><code>XF86AudioMicMute</code></td><td>Mute microphone</td><td><code>bindeld</code></td></tr>
-      <tr><td><code>XF86MonBrightnessUp</code></td><td>Brightness up</td><td><code>bindeld</code></td></tr>
-      <tr><td><code>XF86MonBrightnessDown</code></td><td>Brightness down</td><td><code>bindeld</code></td></tr>
-      <tr><td><code>XF86KbdBrightnessUp</code></td><td>Keyboard brightness up</td><td><code>bindeld</code></td></tr>
-      <tr><td><code>XF86KbdBrightnessDown</code></td><td>Keyboard brightness down</td><td><code>bindeld</code></td></tr>
-      <tr><td><code>XF86KbdLightOnOff</code></td><td>Keyboard backlight cycle</td><td><code>bindld</code></td></tr>
-      <tr><td><code>Alt + XF86AudioRaiseVolume</code></td><td>Volume up (precise)</td><td><code>bindeld</code></td></tr>
-      <tr><td><code>Alt + XF86AudioLowerVolume</code></td><td>Volume down (precise)</td><td><code>bindeld</code></td></tr>
-      <tr><td><code>Alt + XF86MonBrightnessUp</code></td><td>Brightness up (precise)</td><td><code>bindeld</code></td></tr>
-      <tr><td><code>Alt + XF86MonBrightnessDown</code></td><td>Brightness down (precise)</td><td><code>bindeld</code></td></tr>
-      <tr><td><code>XF86AudioNext</code></td><td>Next track</td><td><code>bindld</code></td></tr>
-      <tr><td><code>XF86AudioPause</code></td><td>Pause</td><td><code>bindld</code></td></tr>
-      <tr><td><code>XF86AudioPlay</code></td><td>Play</td><td><code>bindld</code></td></tr>
-      <tr><td><code>XF86AudioPrev</code></td><td>Previous track</td><td><code>bindld</code></td></tr>
-      <tr><td><code>Super + XF86AudioMute</code></td><td>Switch audio output</td><td><code>bindld</code></td></tr>
-    </tbody>
-  </table>
-</div>
-
-<div class="kbd-section">
-  <div class="kbd-section-title">Tiling &amp; Windows</div>
-  <table class="kbd-table">
-    <thead><tr><th>Shortcut</th><th>Action</th><th>Type</th></tr></thead>
-    <tbody>
+      <tr><td><code>Super + Space</code></td><td>Launcher</td><td><code>bindd</code></td></tr>
+      <tr><td><code>Super + K</code></td><td>Show cheatsheet</td><td><code>bindd</code></td></tr>
       <tr><td><code>Super + Q</code></td><td>Close window</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Ctrl + Alt + Delete</code></td><td>Close all windows</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + J</code></td><td>Toggle window split</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + P</code></td><td>Pseudo window</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + T</code></td><td>Toggle floating/tiling</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + F</code></td><td>Full screen</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Ctrl + F</code></td><td>Tiled full screen</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Alt + F</code></td><td>Full width</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + O</code></td><td>Pop window out (float &amp; pin)</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + L</code></td><td>Toggle workspace layout</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Left/Right/Up/Down</code></td><td>Move window focus</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + Left/Right/Up/Down</code></td><td>Swap window</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + 1–9, 0</code></td><td>Switch to workspace 1–10</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + 1–9, 0</code></td><td>Move window to workspace 1–10</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + Alt + 1–9, 0</code></td><td>Move window silently to workspace 1–10</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + S</code></td><td>Toggle scratchpad</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Alt + S</code></td><td>Move window to scratchpad</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Tab</code></td><td>Next workspace</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + Tab</code></td><td>Previous workspace</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Ctrl + Tab</code></td><td>Former workspace</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + Alt + Left/Right/Up/Down</code></td><td>Move workspace to monitor</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Alt + Tab</code></td><td>Cycle to next window</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Alt + Shift + Tab</code></td><td>Cycle to previous window</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + -</code></td><td>Expand window left</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + =</code></td><td>Shrink window left</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + -</code></td><td>Shrink window up</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + =</code></td><td>Expand window down</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Scroll Down/Up</code></td><td>Scroll active workspace</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Mouse Left</code></td><td>Move window (drag)</td><td><code>bindmd</code></td></tr>
-      <tr><td><code>Super + Mouse Right</code></td><td>Resize window (drag)</td><td><code>bindmd</code></td></tr>
-      <tr><td><code>Super + G</code></td><td>Toggle window grouping</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Alt + G</code></td><td>Move active window out of group</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Alt + Left/Right/Up/Down</code></td><td>Move window to group</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Alt + Tab</code></td><td>Next window in group</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Alt + Shift + Tab</code></td><td>Previous window in group</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Ctrl + Left/Right</code></td><td>Move grouped window focus</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Alt + Scroll Down/Up</code></td><td>Next/previous in group</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Alt + 1–5</code></td><td>Switch to group window 1–5</td><td><code>bindd</code></td></tr>
-    </tbody>
-  </table>
-</div>
-
-<div class="kbd-section">
-  <div class="kbd-section-title">Utilities &amp; System</div>
-  <table class="kbd-table">
-    <thead><tr><th>Shortcut</th><th>Action</th><th>Type</th></tr></thead>
-    <tbody>
-      <tr><td><code>Super + Space</code></td><td>Launch apps</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Alt + Space</code></td><td>Leenium menu</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Esc</code></td><td>System menu</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + K</code></td><td>Show keybindings cheatsheet</td><td><code>bindd</code></td></tr>
-      <tr><td><code>XF86PowerOff</code></td><td>Power menu</td><td><code>bindld</code></td></tr>
-      <tr><td><code>XF86Calculator</code></td><td>Calculator</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Ctrl + E</code></td><td>Emoji picker</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Ctrl + C</code></td><td>Capture menu</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Ctrl + O</code></td><td>Toggle menu</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + Space</code></td><td>Toggle top bar</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Ctrl + Space</code></td><td>Theme background menu</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + Ctrl + Space</code></td><td>Theme menu</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Backspace</code></td><td>Toggle window transparency</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + Backspace</code></td><td>Toggle window gaps</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Ctrl + Backspace</code></td><td>Toggle single-window square aspect</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Comma</code></td><td>Dismiss last notification</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + Comma</code></td><td>Dismiss all notifications</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Ctrl + Comma</code></td><td>Toggle silencing notifications</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Alt + Comma</code></td><td>Invoke last notification</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + Alt + Comma</code></td><td>Restore last notification</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Ctrl + I</code></td><td>Toggle locking on idle</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Ctrl + N</code></td><td>Toggle nightlight</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Ctrl + L</code></td><td>Lock system</td><td><code>bindd</code></td></tr>
+      <tr><td><code>Super + 1-0</code></td><td>Switch workspace</td><td><code>bindd</code></td></tr>
+      <tr><td><code>Super + Shift + 1-0</code></td><td>Move window to workspace</td><td><code>bindd</code></td></tr>
+      <tr><td><code>XF86AudioRaiseVolume</code></td><td>Volume up</td><td><code>bindeld</code></td></tr>
       <tr><td><code>Print</code></td><td>Screenshot</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Alt + Print</code></td><td>Screen recording</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Print</code></td><td>Color picker</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Ctrl + S</code></td><td>Share</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Ctrl + X</code></td><td>Toggle dictation</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Ctrl + A</code></td><td>Audio controls</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Ctrl + B</code></td><td>Bluetooth controls</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Ctrl + W</code></td><td>Wifi controls</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Ctrl + T</code></td><td>Activity monitor</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Shift + Ctrl + Esc</code></td><td>Activity monitor</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Ctrl + Alt + T</code></td><td>Show time</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Ctrl + Alt + B</code></td><td>Show battery remaining</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Ctrl + F1</code></td><td>Apple Display brightness down</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Ctrl + F2</code></td><td>Apple Display brightness up</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Shift + Ctrl + F2</code></td><td>Apple Display full brightness</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Z</code></td><td>Screen magnifier toggle</td><td><code>bind</code></td></tr>
-      <tr><td><code>Super + Numpad +</code></td><td>Screen magnifier in</td><td><code>bind</code></td></tr>
-      <tr><td><code>Super + Numpad -</code></td><td>Screen magnifier out</td><td><code>bind</code></td></tr>
     </tbody>
   </table>
-</div>
+</section>
 
-<div class="kbd-section">
-  <div class="kbd-section-title">Legacy Bindings</div>
-  <table class="kbd-table">
-    <thead><tr><th>Shortcut</th><th>Action</th><th>Type</th></tr></thead>
-    <tbody>
-      <tr><td><code>Super + Shift + Enter</code></td><td>Browser</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + F</code></td><td>File manager</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Alt + Shift + F</code></td><td>File manager (cwd)</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Shift + Alt + B</code></td><td>Browser (private)</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + N</code></td><td>Neovim</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + D</code></td><td>Lazy Docker</td><td><code>bindd</code></td></tr>
-      <tr><td><code>Super + Slash</code></td><td>Password manager</td><td><code>bindd</code></td></tr>
-    </tbody>
-  </table>
-</div>
-
-<p style="margin:0;font-size:0.78rem;color:var(--muted);">
-  Source: <code>leenium/config/hypr/bindings.conf</code> +
-  <code>leenium/default/hypr/bindings/*.conf</code>
-</p>
+<script>
+  (function () {
+    const search = document.getElementById("kbSearchPreview");
+    if (!search) return;
+    search.addEventListener("input", function () {
+      const q = this.value.trim().toLowerCase();
+      document.querySelectorAll(".kbd-table tbody tr").forEach((row) => {
+        row.classList.toggle("hidden", q.length > 0 && !row.textContent.toLowerCase().includes(q));
+      });
+    });
+  })();
+</script>

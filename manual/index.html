@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Leenium Manual</title>
+  <meta name="description" content="Leenium manual for installation, first boot, troubleshooting, keybindings, and Hyprland config layering.">
   <link rel="icon" type="image/x-icon" href="../favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,103 +12,117 @@
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <div class="wrapper">
+  <header class="site-header">
+    <div class="shell">
+      <a href="./" class="brand" aria-label="Leenium manual home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-copy">
+          <strong>LEENIUM MANUAL</strong>
+          <span>Operator docs</span>
+        </span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav id="site-nav" class="site-nav" aria-label="Manual navigation">
+        <a href="./install/">Install</a>
+        <a href="./post-install/">First Boot</a>
+        <a href="./troubleshooting/">Troubleshooting</a>
+        <a href="./keybindings/">Keybindings</a>
+        <a href="./hypr/">Hypr</a>
+        <a href="../" class="header-cta">Back to Home</a>
+      </nav>
+    </div>
+  </header>
 
-    <header class="top">
-      <div class="chrome">
-        <div class="dots" aria-hidden="true">
-          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+  <main>
+    <div class="shell">
+      <section class="hero">
+        <div class="hero-kicker">Documentation Hub</div>
+        <h1>Everything after "it boots".</h1>
+        <p>
+          This manual is the practical path through Leenium installation, first boot behavior,
+          recovery steps, and desktop-level customization references.
+        </p>
+        <div class="hero-actions">
+          <a class="button primary" href="./install/">Open Install Manual</a>
+          <a class="button secondary" href="./troubleshooting/">Open Troubleshooting</a>
+          <a class="button secondary" href="./keybindings/">See Keybindings</a>
         </div>
-        <strong>leenium-manual</strong>
-        <span>operator docs</span>
-      </div>
-      <div class="top-body">
-        <span class="eyebrow">Manual Index</span>
-        <h1 class="title">The <span class="title-accent">Leenium</span> Manual</h1>
-        <p class="subtitle">Reference for installation, first boot, recovery, keybindings, and Hyprland configuration. Start with the chapter that matches your situation.</p>
-        <nav class="nav">
-          <a href="../">Home</a>
+        <div class="hero-meta">
+          <span class="pill">Install flow</span>
+          <span class="pill">First boot checklist</span>
+          <span class="pill">Generated hotkeys</span>
+          <span class="pill">Hyprland layering</span>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-heading">
+          <h2>Main chapters</h2>
+          <p>Start with the page that matches your current stage. Each chapter stays focused on what to do next.</p>
+        </div>
+        <div class="card-grid">
+          <article class="surface card">
+            <h3>Install Manual</h3>
+            <p>Preflight checks, stage order, log locations, and failure triage flow.</p>
+            <div class="hero-actions"><a class="button secondary" href="./install/">Open chapter</a></div>
+          </article>
+          <article class="surface card">
+            <h3>Post-Install Guide</h3>
+            <p>What runs on first login, what to check next, and optional setup commands.</p>
+            <div class="hero-actions"><a class="button secondary" href="./post-install/">Open chapter</a></div>
+          </article>
+          <article class="surface card">
+            <h3>Troubleshooting</h3>
+            <p>Recovery order, targeted commands, and debug collection before broad resets.</p>
+            <div class="hero-actions"><a class="button secondary" href="./troubleshooting/">Open chapter</a></div>
+          </article>
+          <article class="surface card">
+            <h3>Keybindings</h3>
+            <p>Generated shortcut table sourced from real Hyprland config files.</p>
+            <div class="hero-actions"><a class="button secondary" href="./keybindings/">Open chapter</a></div>
+          </article>
+          <article class="surface card">
+            <h3>Hypr Config Reference</h3>
+            <p>Load order, override boundaries, and safe file locations for customization.</p>
+            <div class="hero-actions"><a class="button secondary" href="./hypr/">Open chapter</a></div>
+          </article>
+          <article class="surface card">
+            <h3>Back to homepage</h3>
+            <p>Go back to release links, install methods, and public project repo overview.</p>
+            <div class="hero-actions"><a class="button secondary" href="../">Go home</a></div>
+          </article>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div>Leenium manual focuses on runtime operations and practical recovery.</div>
+        <div class="footer-links">
           <a href="./install/">Install</a>
-          <a href="./post-install/">First Boot</a>
-          <a href="./keybindings/">Keybindings</a>
-        </nav>
-      </div>
-    </header>
-
-    <p class="shell-note">Start with the chapter that matches your stage: install, first boot, recovery, keybindings, or config layering.</p>
-
-    <section class="hero-grid">
-      <article class="mini-card">
-        <h3>Install</h3>
-        <p>Requirements, stage order, log paths, and installer assumptions.</p>
-      </article>
-      <article class="mini-card">
-        <h3>First Boot</h3>
-        <p>What runs automatically after install and what matters immediately after login.</p>
-      </article>
-      <article class="mini-card">
-        <h3>Recovery</h3>
-        <p>UI restarts, debug collection, and update or first-run repair commands.</p>
-      </article>
-      <article class="mini-card">
-        <h3>Keybindings</h3>
-        <p>Generated from shipped Hyprland binding files. Searchable, complete.</p>
-      </article>
-    </section>
-
-    <main class="grid">
-      <article class="card">
-        <h2>01. Install Manual</h2>
-        <p>Read this before testing an installer change or diagnosing an install failure.</p>
-        <a class="button primary" href="./install/">Open chapter</a>
-      </article>
-
-      <article class="card">
-        <h2>02. Post-Install Guide</h2>
-        <p>Read this after the first login or when first-run automation did not complete.</p>
-        <a class="button primary" href="./post-install/">Open chapter</a>
-      </article>
-
-      <article class="card">
-        <h2>03. Troubleshooting</h2>
-        <p>When something is broken and you want the shortest route to logs and recovery.</p>
-        <a class="button primary" href="./troubleshooting/">Open chapter</a>
-      </article>
-
-      <article class="card">
-        <h2>04. Keybindings</h2>
-        <p>Generated from the shipped Hyprland binding files. Stays tied to real config.</p>
-        <a class="button primary" href="./keybindings/">Open chapter</a>
-      </article>
-
-      <article class="card">
-        <h2>05. Hypr Config Reference</h2>
-        <p>File load order, what is project-owned vs user-editable, tweaking safely.</p>
-        <a class="button primary" href="./hypr/">Open chapter</a>
-      </article>
-    </main>
-
-    <section class="section" style="margin-top:14px;">
-      <div class="section-intro">
-        <div>
-          <h2>How To Use This Manual</h2>
-          <p>This manual answers operational questions. It is not an architecture doc and is not a substitute for reading the source repos. Use it when you need the shortest clear answer for how Leenium behaves at runtime.</p>
+          <a href="./post-install/">Post-Install</a>
+          <a href="./troubleshooting/">Troubleshooting</a>
+          <a href="../">leenium.org</a>
         </div>
-      </div>
-      <div class="pill-row">
-        <span class="pill">install flow</span>
-        <span class="pill">first boot</span>
-        <span class="pill">recovery paths</span>
-        <span class="pill">generated hotkeys</span>
-        <span class="pill">Hyprland layering</span>
-      </div>
-    </section>
+      </footer>
+    </div>
+  </main>
 
-    <footer class="footer">
-      <a href="../">← Back to leenium.org</a>
-    </footer>
-
-  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const navToggle = document.querySelector(".nav-toggle");
+      const siteNav = document.getElementById("site-nav");
+      if (!navToggle || !siteNav) return;
+      navToggle.addEventListener("click", function () {
+        const isOpen = siteNav.classList.toggle("is-open");
+        navToggle.setAttribute("aria-expanded", String(isOpen));
+      });
+      siteNav.querySelectorAll("a").forEach(function (link) {
+        link.addEventListener("click", function () {
+          siteNav.classList.remove("is-open");
+          navToggle.setAttribute("aria-expanded", "false");
+        });
+      });
+    });
+  </script>
   <script src="../scripts/theme.js"></script>
 </body>
 </html>
