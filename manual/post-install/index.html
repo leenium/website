@@ -11,6 +11,40 @@
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>
+  <header class="site-header">
+    <div class="shell">
+      <a href="../../" class="brand" aria-label="Leenium home">
+        <img src="../../assets/logo.svg" class="brand-mark" alt="Leenium logo">
+        <span class="brand-copy">
+          <strong>LEENIUM</strong>
+          <span>Arch Linux + Hyprland</span>
+        </span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav id="site-nav" class="site-nav" aria-label="Primary">
+        <a href="../../#download">Download</a>
+        <a href="../../#install">Install</a>
+        <a href="../../#docs">Docs</a>
+        <a href="../" class="is-active" aria-current="page">Manual</a>
+        <a href="../../#repos">Repos</a>
+        <a href="https://github.com/leenium" target="_blank" rel="noopener noreferrer" class="header-cta">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <nav class="manual-strip" aria-label="Manual chapters">
+    <div class="shell">
+      <a class="manual-link" data-manual-path="website/manual" href="../">Manual Home</a>
+      <a class="manual-link" data-manual-path="website/manual/install" href="../install/">Install</a>
+      <a class="manual-link" data-manual-path="website/manual/post-install" href="./">Post-Install</a>
+      <a class="manual-link" data-manual-path="website/manual/troubleshooting" href="../troubleshooting/">Troubleshooting</a>
+      <a class="manual-link" data-manual-path="website/manual/keybindings" href="../keybindings/">Keybindings</a>
+      <a class="manual-link" data-manual-path="website/manual/hypr" href="../hypr/">Hypr</a>
+      <a class="manual-link" data-manual-path="website/manual/commands" href="../commands/">Commands</a>
+      <a class="manual-link" data-manual-path="website/manual/hardware" href="../hardware/">Hardware</a>
+    </div>
+  </nav>
+
   <main>
     <div class="shell">
       <section class="hero">
@@ -21,9 +55,19 @@
           <a class="button primary" href="../troubleshooting/">Recovery commands</a>
           <a class="button secondary" href="../">Manual Home</a>
         </div>
+        <nav class="page-toc" aria-label="On this page">
+          <strong>On this page</strong>
+          <div class="page-toc-links">
+            <a href="#first-run">First run</a>
+            <a href="#appearance">Appearance</a>
+            <a href="#commands">Command groups</a>
+            <a href="#health">Health</a>
+            <a href="#power">Power</a>
+          </div>
+        </nav>
       </section>
 
-      <section class="split">
+      <section class="split" id="first-run">
         <article class="surface">
           <h2>Automatic first-run behavior</h2>
           <p>Triggered by marker:</p>
@@ -46,7 +90,7 @@
         </article>
       </section>
 
-      <section class="surface">
+      <section class="surface" id="appearance">
         <h2>Appearance controls</h2>
         <p>Use <code>Super + Space</code> then Appearance, or direct commands:</p>
         <ul>
@@ -69,7 +113,37 @@
         </div>
       </section>
 
-      <section class="surface">
+      <section class="split" id="commands">
+        <article class="surface">
+          <h2>Daily command groups</h2>
+          <ul>
+            <li><code>leenium-launch-*</code> for Wi-Fi, Bluetooth, audio, browser, editor, and UI entry points</li>
+            <li><code>leenium-update*</code> for updates and update log analysis</li>
+            <li><code>leenium-refresh-*</code> to re-apply shipped defaults for selected components</li>
+            <li><code>leenium-restart-*</code> to restart individual desktop services</li>
+            <li><code>leenium-theme-*</code> and <code>leenium-font-*</code> for appearance control</li>
+          </ul>
+        </article>
+        <article class="surface">
+          <h2>Health and diagnostics</h2>
+          <pre><code>leenium-health
+leenium-debug
+leenium-debug --print
+leenium-upload-log this-boot</code></pre>
+        </article>
+      </section>
+
+      <section class="surface" id="health">
+        <h2>Power, battery, and mobility helpers</h2>
+        <ul>
+          <li><code>leenium-battery-status</code>, <code>leenium-battery-remaining</code>, and <code>leenium-battery-monitor</code></li>
+          <li><code>leenium-brightness-display</code> and <code>leenium-brightness-keyboard</code></li>
+          <li><code>leenium-hibernation-available</code>, <code>leenium-hibernation-setup</code>, and <code>leenium-hibernation-remove</code></li>
+          <li><code>leenium-hyprland-monitor-*</code> helpers for display switching and scaling cycles</li>
+        </ul>
+      </section>
+
+      <section class="surface" id="power">
         <h2>If first run did not complete</h2>
         <pre><code>leenium-first-run</code></pre>
         <div class="hero-actions"><a class="button secondary" href="../troubleshooting/">Continue to Troubleshooting</a></div>
@@ -86,6 +160,7 @@
       </footer>
     </div>
   </main>
+  <script src="../../scripts/manual.js"></script>
   <script src="../../scripts/theme.js"></script>
 </body>
 </html>

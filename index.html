@@ -47,6 +47,18 @@
       min-height: 100vh;
     }
 
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -22% -10% auto -10%;
+      height: 42vh;
+      pointer-events: none;
+      background: radial-gradient(circle at 32% 50%, rgba(100, 223, 177, 0.08), transparent 58%);
+      filter: blur(24px);
+      animation: driftGlow 18s ease-in-out infinite;
+      z-index: 0;
+    }
+
     html {
       scrollbar-color: rgba(138, 185, 165, 0.24) rgba(7, 14, 13, 0.78);
     }
@@ -88,6 +100,8 @@
     .shell {
       width: min(calc(100% - 32px), var(--max));
       margin: 0 auto;
+      position: relative;
+      z-index: 1;
     }
 
     .site-header {
@@ -117,11 +131,12 @@
     }
 
     .brand-mark {
-      width: 14px;
-      height: 14px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--accent), #d9fff0);
-      box-shadow: 0 0 24px rgba(100, 223, 177, 0.55);
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow: 0 0 24px rgba(100, 223, 177, 0.35);
+      flex-shrink: 0;
     }
 
     .brand-copy {
@@ -169,6 +184,12 @@
       color: var(--muted);
       font-size: 0.95rem;
       transition: color 0.18s ease;
+    }
+
+    .site-nav a.is-active {
+      color: var(--text);
+      border-bottom: 1px solid rgba(100, 223, 177, 0.46);
+      padding-bottom: 3px;
     }
 
     .site-nav a:hover {
@@ -508,6 +529,13 @@
       box-shadow: var(--shadow);
     }
 
+    .surface:hover,
+    .doc-link:hover,
+    .repo-link:hover {
+      transform: translateY(-2px);
+      border-color: var(--line-strong);
+    }
+
     .surface::after {
       content: "";
       position: absolute;
@@ -679,9 +707,24 @@
 
     .doc-link:hover,
     .repo-link:hover {
-      transform: translateY(-1px);
-      border-color: var(--line-strong);
       background: rgba(255, 255, 255, 0.05);
+    }
+
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+
+    .reveal-on-scroll.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes driftGlow {
+      0%,
+      100% { transform: translate3d(0, 0, 0); }
+      50% { transform: translate3d(2.5%, 1.5%, 0); }
     }
 
     .doc-link strong,
@@ -1008,13 +1051,25 @@
         inset: 34px 0 98px 72px;
       }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      body::before {
+        animation: none;
+      }
+
+      .reveal-on-scroll {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+    }
   </style>
 </head>
 <body>
   <header class="site-header">
     <div class="shell">
       <a href="#top" class="brand" aria-label="Leenium home">
-        <span class="brand-mark" aria-hidden="true"></span>
+        <img src="assets/logo.svg" class="brand-mark" alt="Leenium logo">
         <span class="brand-copy">
           <strong>LEENIUM</strong>
           <span>Arch Linux + Hyprland</span>
@@ -1024,10 +1079,11 @@
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
 
       <nav id="site-nav" class="site-nav" aria-label="Primary">
-        <a href="#download">Download</a>
-        <a href="#install">Install</a>
-        <a href="#docs">Docs</a>
-        <a href="#repos">Repos</a>
+        <a href="#download" class="nav-link" data-section="download">Download</a>
+        <a href="#install" class="nav-link" data-section="install">Install</a>
+        <a href="#docs" class="nav-link" data-section="docs">Docs</a>
+        <a href="manual/">Manual</a>
+        <a href="#repos" class="nav-link" data-section="repos">Repos</a>
         <a href="https://github.com/leenium" target="_blank" rel="noopener noreferrer" class="header-cta">GitHub</a>
       </nav>
     </div>
@@ -1046,7 +1102,7 @@
             </p>
 
             <div class="hero-actions">
-              <a class="button button-primary" href="http://cdn.leenium.org/leenium.iso">Download ISO</a>
+              <a class="button button-primary" href="#download">Download ISO</a>
               <a class="button button-secondary" href="#download">View Release Details</a>
               <a class="button button-secondary" href="manual/install/">Install Manual</a>
             </div>
@@ -1264,6 +1320,16 @@ cd leenium
             <strong>Troubleshooting</strong>
             <span>Common failure cases, recovery steps, and practical fixes.</span>
           </a>
+
+          <a class="doc-link" href="manual/commands/">
+            <strong>Commands Catalog</strong>
+            <span>Grouped reference for launch, update, refresh, restart, and diagnostic commands.</span>
+          </a>
+
+          <a class="doc-link" href="manual/hardware/">
+            <strong>Hardware Compatibility</strong>
+            <span>Display, battery, hibernation, and model-oriented helper command notes.</span>
+          </a>
         </div>
       </section>
 
@@ -1296,6 +1362,38 @@ cd leenium
             <strong>Hyprland config docs</strong>
             <span>Reference for how the desktop is structured after install.</span>
           </a>
+        </div>
+      </section>
+
+      <section id="operations">
+        <div class="section-heading">
+          <h2>How Leenium ships updates.</h2>
+          <p>
+            The distro is split into clear operational surfaces so build, sign, publish, and install responsibilities stay isolated and debuggable.
+          </p>
+        </div>
+
+        <div class="card-grid">
+          <article class="surface">
+            <h3>1. Build + sign packages</h3>
+            <p>
+              <code>packages-builder</code> builds packages, signs every output, and manages the Leenium repo key workflow.
+            </p>
+          </article>
+
+          <article class="surface">
+            <h3>2. Publish repo metadata</h3>
+            <p>
+              <code>pkg-repo</code> ingests signed artifacts and publishes to <code>https://pkgs.leenium.org/stable/x86_64/</code>.
+            </p>
+          </article>
+
+          <article class="surface">
+            <h3>3. Build the ISO</h3>
+            <p>
+              <code>iso</code> consumes the live package repo and bootstraps <code>leenium-keyring</code> before package resolution.
+            </p>
+          </article>
         </div>
       </section>
 
@@ -1409,11 +1507,35 @@ cd leenium
       }
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
+    function initHomePageUi() {
+      const prefersReducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (!prefersReducedMotion && typeof IntersectionObserver !== "undefined") {
+        const revealTargets = document.querySelectorAll("section, .surface, .doc-link, .repo-link, .stat");
+        revealTargets.forEach(function (el, index) {
+          el.classList.add("reveal-on-scroll");
+          el.style.transitionDelay = Math.min((index % 6) * 60, 220) + "ms";
+        });
+
+        const observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          });
+        }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+
+        revealTargets.forEach(function (el) {
+          observer.observe(el);
+        });
+      }
+
       const navToggle = document.querySelector(".nav-toggle");
       const siteNav = document.getElementById("site-nav");
+      const navLinks = Array.from(document.querySelectorAll(".nav-link[data-section]"));
 
-      if (navToggle && siteNav) {
+      if (navToggle && siteNav && navToggle.dataset.ready !== "1") {
+        navToggle.dataset.ready = "1";
         navToggle.addEventListener("click", function () {
           const isOpen = siteNav.classList.toggle("is-open");
           navToggle.setAttribute("aria-expanded", String(isOpen));
@@ -1427,7 +1549,62 @@ cd leenium
         });
       }
 
-      loadReleaseData();
+      if (navLinks.length > 0 && typeof IntersectionObserver !== "undefined" && document.body.dataset.homeNavReady !== "1") {
+        document.body.dataset.homeNavReady = "1";
+        const sectionMap = new Map();
+        navLinks.forEach(function (link) {
+          const id = link.getAttribute("data-section");
+          if (!id) return;
+          const section = document.getElementById(id);
+          if (section) sectionMap.set(id, section);
+        });
+
+        function setActive(id) {
+          navLinks.forEach(function (link) {
+            const isActive = link.getAttribute("data-section") === id;
+            link.classList.toggle("is-active", isActive);
+            if (isActive) {
+              link.setAttribute("aria-current", "page");
+            } else {
+              link.removeAttribute("aria-current");
+            }
+          });
+        }
+
+        if (window.location.hash) {
+          const hashId = window.location.hash.replace("#", "");
+          if (sectionMap.has(hashId)) setActive(hashId);
+        }
+
+        const observer = new IntersectionObserver(function (entries) {
+          const visible = entries
+            .filter(function (entry) { return entry.isIntersecting; })
+            .sort(function (a, b) { return b.intersectionRatio - a.intersectionRatio; });
+          if (visible.length === 0) return;
+          setActive(visible[0].target.id);
+        }, { threshold: [0.35, 0.55, 0.75], rootMargin: "-20% 0px -55% 0px" });
+
+        sectionMap.forEach(function (section) {
+          observer.observe(section);
+        });
+      }
+
+      if (document.body && document.body.dataset.releaseLoaded !== "1") {
+        document.body.dataset.releaseLoaded = "1";
+        loadReleaseData().catch(function () {});
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      try {
+        initHomePageUi();
+      } catch (_error) {}
+    });
+
+    window.addEventListener("pageshow", function () {
+      try {
+        initHomePageUi();
+      } catch (_error) {}
     });
   </script>
 </body>

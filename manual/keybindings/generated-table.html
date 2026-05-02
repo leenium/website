@@ -1,3 +1,178 @@
+<style>
+  :root {
+    color-scheme: dark;
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    background: #0a1513;
+    color: #e7f6ef;
+    font-family: "Space Grotesk", "Segoe UI", sans-serif;
+    scrollbar-color: rgba(138, 185, 165, 0.34) rgba(7, 14, 13, 0.86);
+  }
+
+  body::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  body::-webkit-scrollbar-track {
+    background: rgba(7, 14, 13, 0.86);
+  }
+
+  body::-webkit-scrollbar-thumb {
+    background: rgba(138, 185, 165, 0.34);
+    border-radius: 999px;
+    border: 2px solid rgba(7, 14, 13, 0.86);
+  }
+
+  body::-webkit-scrollbar-thumb:hover {
+    background: rgba(138, 185, 165, 0.48);
+  }
+
+  .kbd-shell {
+    margin: 0;
+    padding: 12px;
+    display: grid;
+    gap: 14px;
+  }
+
+  .kbd-shell .section {
+    margin: 0;
+    border: 1px solid rgba(138, 185, 165, 0.2);
+    border-radius: 14px;
+    background: linear-gradient(180deg, rgba(15, 26, 23, 0.88), rgba(9, 16, 14, 0.9));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    overflow: hidden;
+  }
+
+  .kbd-shell .section h2 {
+    margin: 0;
+    padding: 14px 16px;
+    font-size: 1rem;
+    letter-spacing: -0.01em;
+    color: #c8f5e4;
+    border-bottom: 1px solid rgba(138, 185, 165, 0.16);
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .kbd-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.94rem;
+    table-layout: fixed;
+  }
+
+  .kbd-table th:nth-child(1),
+  .kbd-table td:nth-child(1) {
+    width: 36%;
+  }
+
+  .kbd-table th:nth-child(2),
+  .kbd-table td:nth-child(2) {
+    width: 48%;
+  }
+
+  .kbd-table th:nth-child(3),
+  .kbd-table td:nth-child(3) {
+    width: 16%;
+    text-align: right;
+  }
+
+  .kbd-table th,
+  .kbd-table td {
+    padding: 11px 12px;
+    border-bottom: 1px solid rgba(138, 185, 165, 0.12);
+    text-align: left;
+    vertical-align: top;
+    line-height: 1.5;
+    color: #d5eae1;
+  }
+
+  .kbd-table th {
+    font-family: "JetBrains Mono", "SFMono-Regular", monospace;
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #9fcab8;
+    background: rgba(6, 12, 10, 0.8);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+
+  .kbd-table tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.015);
+  }
+
+  .kbd-table tbody tr:hover {
+    background: rgba(100, 223, 177, 0.08);
+  }
+
+  .kbd-table code {
+    font-family: "JetBrains Mono", "SFMono-Regular", monospace;
+    color: #f4d58e;
+    background: rgba(4, 9, 8, 0.9);
+    border: 1px solid rgba(138, 185, 165, 0.2);
+    border-radius: 8px;
+    padding: 2px 7px;
+    white-space: nowrap;
+    font-size: 0.84rem;
+  }
+
+  .kbd-table td:nth-child(1) code {
+    letter-spacing: 0.01em;
+    font-weight: 600;
+  }
+
+  .kbd-table td:nth-child(3) code {
+    color: #b8f3da;
+    border-color: rgba(100, 223, 177, 0.26);
+    background: rgba(11, 28, 22, 0.92);
+  }
+
+  .kbd-table td:nth-child(2) {
+    word-break: break-word;
+  }
+
+  @media (max-width: 900px) {
+    .kbd-table {
+      font-size: 0.9rem;
+    }
+
+    .kbd-table th,
+    .kbd-table td {
+      padding: 10px;
+    }
+
+    .kbd-table code {
+      font-size: 0.8rem;
+      padding: 2px 6px;
+    }
+
+    .kbd-table th:nth-child(1),
+    .kbd-table td:nth-child(1) {
+      width: 44%;
+    }
+
+    .kbd-table th:nth-child(2),
+    .kbd-table td:nth-child(2) {
+      width: 40%;
+    }
+
+    .kbd-table th:nth-child(3),
+    .kbd-table td:nth-child(3) {
+      width: 16%;
+    }
+  }
+
+  .kbd-table tr.hidden {
+    display: none;
+  }
+</style>
+
 <div class="kbd-shell">
   <section class="section">
     <h2>Applications</h2>

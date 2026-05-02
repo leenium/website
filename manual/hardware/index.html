@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hardware Compatibility — Leenium</title>
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="shell">
+      <a href="../../" class="brand" aria-label="Leenium home">
+        <img src="../../assets/logo.svg" class="brand-mark" alt="Leenium logo">
+        <span class="brand-copy">
+          <strong>LEENIUM</strong>
+          <span>Arch Linux + Hyprland</span>
+        </span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav id="site-nav" class="site-nav" aria-label="Primary">
+        <a href="../../#download">Download</a>
+        <a href="../../#install">Install</a>
+        <a href="../../#docs">Docs</a>
+        <a href="../" class="is-active" aria-current="page">Manual</a>
+        <a href="../../#repos">Repos</a>
+        <a href="https://github.com/leenium" target="_blank" rel="noopener noreferrer" class="header-cta">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <nav class="manual-strip" aria-label="Manual chapters">
+    <div class="shell">
+      <a class="manual-link" data-manual-path="website/manual" href="../">Manual Home</a>
+      <a class="manual-link" data-manual-path="website/manual/install" href="../install/">Install</a>
+      <a class="manual-link" data-manual-path="website/manual/post-install" href="../post-install/">Post-Install</a>
+      <a class="manual-link" data-manual-path="website/manual/troubleshooting" href="../troubleshooting/">Troubleshooting</a>
+      <a class="manual-link" data-manual-path="website/manual/keybindings" href="../keybindings/">Keybindings</a>
+      <a class="manual-link" data-manual-path="website/manual/hypr" href="../hypr/">Hypr</a>
+      <a class="manual-link" data-manual-path="website/manual/commands" href="../commands/">Commands</a>
+      <a class="manual-link" data-manual-path="website/manual/hardware" href="./">Hardware</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="shell">
+      <section class="hero">
+        <div class="hero-kicker">Hardware</div>
+        <h1>Hardware behaviors and compatibility notes.</h1>
+        <p>Practical notes for device classes, graphics layouts, battery behavior, and model-specific helper commands in the Leenium runtime.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="../troubleshooting/">Open Troubleshooting</a>
+          <a class="button secondary" href="../">Manual Home</a>
+        </div>
+        <nav class="page-toc" aria-label="On this page">
+          <strong>On this page</strong>
+          <div class="page-toc-links">
+            <a href="#detection">Detection</a>
+            <a href="#display">Display</a>
+            <a href="#hibernation">Hibernation</a>
+            <a href="#known-behavior">Known behavior</a>
+          </div>
+        </nav>
+      </section>
+
+      <section class="surface" id="detection">
+        <h2>Hardware detection helpers</h2>
+        <ul>
+          <li><code>leenium-hw-intel</code>, <code>leenium-hw-hybrid-gpu</code>, <code>leenium-hw-vulkan</code></li>
+          <li><code>leenium-hw-external-monitors</code>, <code>leenium-hw-recover-internal-monitor</code></li>
+          <li><code>leenium-hw-touchpad</code>, <code>leenium-haptic-touchpad</code></li>
+          <li><code>leenium-hw-asus-rog</code>, <code>leenium-hw-framework16</code>, <code>leenium-hw-dell-xps-oled</code></li>
+        </ul>
+      </section>
+
+      <section class="split" id="display">
+        <article class="surface">
+          <h2>Display and monitor control</h2>
+          <pre><code>leenium-hyprland-monitor-focused
+leenium-hyprland-monitor-internal
+leenium-hyprland-monitor-internal-mirror
+leenium-hyprland-monitor-scaling-cycle
+leenium-hyprland-monitor-watch</code></pre>
+          <div class="callout">Use helpers first, then edit monitor overrides in <code>~/.config/hypr/monitors.conf</code> when needed.</div>
+        </article>
+        <article class="surface">
+          <h2>Power and battery</h2>
+          <pre><code>leenium-ac-present
+leenium-battery-status
+leenium-battery-remaining
+leenium-battery-remaining-time
+leenium-battery-monitor</code></pre>
+        </article>
+      </section>
+
+      <section class="surface" id="hibernation">
+        <h2>Hibernation and resume</h2>
+        <ul>
+          <li>Check support with <code>leenium-hibernation-available</code></li>
+          <li>Enable with <code>leenium-hibernation-setup</code></li>
+          <li>Remove with <code>leenium-hibernation-remove</code></li>
+          <li>If resume fails, collect <code>leenium-debug --print</code> and upload logs before changing swap or kernel parameters</li>
+        </ul>
+      </section>
+
+      <section class="surface" id="known-behavior">
+        <h2>Known-behavior guidance</h2>
+        <ul>
+          <li>Hybrid GPU laptops may need explicit app launch strategy; test using the default launch commands first</li>
+          <li>External monitor state changes are often transient; rerun monitor helper commands before broad config resets</li>
+          <li>Touchpad behavior can vary by vendor firmware; check <code>leenium-hw-touchpad</code> and related input overrides</li>
+          <li>For model-specific issues, include hardware detection command outputs when reporting</li>
+        </ul>
+      </section>
+
+      <footer class="footer">
+        <div>Hardware-focused operational notes for real-world Leenium systems.</div>
+        <div class="footer-links">
+          <a href="../">Manual Home</a>
+          <a href="../commands/">Commands</a>
+          <a href="../hypr/">Hypr Reference</a>
+          <a href="../../">leenium.org</a>
+        </div>
+      </footer>
+    </div>
+  </main>
+  <script src="../../scripts/manual.js"></script>
+  <script src="../../scripts/theme.js"></script>
+</body>
+</html>

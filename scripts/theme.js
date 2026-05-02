@@ -17,6 +17,14 @@ const LEENIUM_THEMES = {
   vantablack:  { bg:'#000000', bg2:'#000000', panel:'#0a0a0a', line:'#1a1a1a', lineHi:'#2a2a2a', tx:'#ffffff', muted:'#8d8d8d', accent:'#b0b0b0', blue:'#b0b0b0', warn:'#cecece', red:'#a4a4a4', glow1:'rgba(255,255,255,0.03)', glow2:'rgba(255,255,255,0.02)' },
 };
 
+function leeniumSafe(fn) {
+  try {
+    return fn();
+  } catch (_error) {
+    return undefined;
+  }
+}
+
 function leeniumApplyTheme(name) {
   const t = LEENIUM_THEMES[name];
   if (!t) return;
@@ -44,14 +52,18 @@ function leeniumApplyTheme(name) {
     const grad = `radial-gradient(ellipse 70% 40% at 12% -8%, ${t.glow1} 0%, transparent 55%), radial-gradient(ellipse 55% 30% at 88% 4%, ${t.glow2} 0%, transparent 50%), ${t.bg}`;
     document.body.style.background = grad;
   }
-  localStorage.setItem('leenium-site-theme', name);
+  leeniumSafe(function () {
+    localStorage.setItem('leenium-site-theme', name);
+  });
   // update picker label if present
   const lbl = document.getElementById('leeniumThemeLabel');
   if (lbl) lbl.textContent = name;
 }
 
 function leeniumLoadTheme() {
-  const saved = localStorage.getItem('leenium-site-theme') || 'leenium';
+  const saved = leeniumSafe(function () {
+    return localStorage.getItem('leenium-site-theme');
+  }) || 'leenium';
   leeniumApplyTheme(saved);
   return saved;
 }
@@ -59,11 +71,86 @@ function leeniumLoadTheme() {
 // apply immediately to avoid flash
 leeniumLoadTheme();
 
-document.addEventListener('DOMContentLoaded', function () {
-  const picker = document.getElementById('leeniumThemePicker');
-  if (!picker) return;
+function leeniumInitRevealAnimations() {
+  if (window.__leeniumRevealInitDone) return;
+  window.__leeniumRevealInitDone = true;
 
-  const current = localStorage.getItem('leenium-site-theme') || 'leenium';
+  const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion) return;
+  if (typeof IntersectionObserver === 'undefined') return;
+
+  const targets = document.querySelectorAll('section, .surface, .card, .hero, .split > article, .card-grid > *');
+  if (!targets.length) return;
+
+  targets.forEach(function (el, index) {
+    if (el.classList.contains('reveal-on-scroll')) return;
+    el.classList.add('reveal-on-scroll');
+    el.style.transitionDelay = Math.min((index % 6) * 60, 220) + 'ms';
+  });
+
+  const observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.12,
+    rootMargin: '0px 0px -8% 0px',
+  });
+
+  function observeNodes(nodes) {
+    nodes.forEach(function (el) {
+      if (!(el instanceof Element)) return;
+      if (el.classList && el.classList.contains('reveal-on-scroll') && !el.classList.contains('is-visible')) {
+        observer.observe(el);
+      }
+      el.querySelectorAll && el.querySelectorAll('.reveal-on-scroll').forEach(function (child) {
+        if (!child.classList.contains('is-visible')) observer.observe(child);
+      });
+    });
+  }
+
+  observeNodes(Array.from(targets));
+
+  const mutationObserver = new MutationObserver(function (mutations) {
+    const added = [];
+    mutations.forEach(function (mutation) {
+      mutation.addedNodes.forEach(function (node) {
+        if (!(node instanceof Element)) return;
+        node.querySelectorAll('section, .surface, .card, .hero, .split > article, .card-grid > *').forEach(function (target, index) {
+          if (!target.classList.contains('reveal-on-scroll')) {
+            target.classList.add('reveal-on-scroll');
+            target.style.transitionDelay = Math.min((index % 6) * 60, 220) + 'ms';
+          }
+          added.push(target);
+        });
+        if (node.matches && node.matches('section, .surface, .card, .hero, .split > article, .card-grid > *')) {
+          if (!node.classList.contains('reveal-on-scroll')) node.classList.add('reveal-on-scroll');
+          added.push(node);
+        }
+      });
+    });
+    if (added.length) observeNodes(added);
+  });
+
+  if (document.body) {
+    mutationObserver.observe(document.body, { childList: true, subtree: true });
+  }
+}
+
+function leeniumInitThemeUi() {
+  leeniumSafe(function () {
+    leeniumInitRevealAnimations();
+  });
+
+  const picker = document.getElementById('leeniumThemePicker');
+  if (!picker || picker.dataset.ready === '1') return;
+  picker.dataset.ready = '1';
+
+  const current = leeniumSafe(function () {
+    return localStorage.getItem('leenium-site-theme');
+  }) || 'leenium';
 
   Object.keys(LEENIUM_THEMES).forEach(function (name) {
     const t = LEENIUM_THEMES[name];
@@ -98,4 +185,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     picker.appendChild(btn);
   });
-});
+}
+
+document.addEventListener('DOMContentLoaded', leeniumInitThemeUi);
+window.addEventListener('pageshow', leeniumInitThemeUi);

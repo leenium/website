@@ -11,6 +11,40 @@
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>
+  <header class="site-header">
+    <div class="shell">
+      <a href="../../" class="brand" aria-label="Leenium home">
+        <img src="../../assets/logo.svg" class="brand-mark" alt="Leenium logo">
+        <span class="brand-copy">
+          <strong>LEENIUM</strong>
+          <span>Arch Linux + Hyprland</span>
+        </span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav id="site-nav" class="site-nav" aria-label="Primary">
+        <a href="../../#download">Download</a>
+        <a href="../../#install">Install</a>
+        <a href="../../#docs">Docs</a>
+        <a href="../" class="is-active" aria-current="page">Manual</a>
+        <a href="../../#repos">Repos</a>
+        <a href="https://github.com/leenium" target="_blank" rel="noopener noreferrer" class="header-cta">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <nav class="manual-strip" aria-label="Manual chapters">
+    <div class="shell">
+      <a class="manual-link" data-manual-path="website/manual" href="../">Manual Home</a>
+      <a class="manual-link" data-manual-path="website/manual/install" href="./">Install</a>
+      <a class="manual-link" data-manual-path="website/manual/post-install" href="../post-install/">Post-Install</a>
+      <a class="manual-link" data-manual-path="website/manual/troubleshooting" href="../troubleshooting/">Troubleshooting</a>
+      <a class="manual-link" data-manual-path="website/manual/keybindings" href="../keybindings/">Keybindings</a>
+      <a class="manual-link" data-manual-path="website/manual/hypr" href="../hypr/">Hypr</a>
+      <a class="manual-link" data-manual-path="website/manual/commands" href="../commands/">Commands</a>
+      <a class="manual-link" data-manual-path="website/manual/hardware" href="../hardware/">Hardware</a>
+    </div>
+  </nav>
+
   <main>
     <div class="shell">
       <section class="hero">
@@ -22,9 +56,20 @@
           <a class="button secondary" href="../">Manual Home</a>
           <a class="button secondary" href="../../">leenium.org</a>
         </div>
+        <nav class="page-toc" aria-label="On this page">
+          <strong>On this page</strong>
+          <div class="page-toc-links">
+            <a href="#requirements">Requirements</a>
+            <a href="#stages">Install stages</a>
+            <a href="#paths">Install paths</a>
+            <a href="#logs">Logs</a>
+            <a href="#triage">Fast triage</a>
+            <a href="#escalation">Escalation</a>
+          </div>
+        </nav>
       </section>
 
-      <section class="split">
+      <section class="split" id="requirements">
         <article class="surface">
           <h2>Preflight requirements</h2>
           <ul>
@@ -45,7 +90,7 @@
         </article>
       </section>
 
-      <section class="surface">
+      <section class="surface" id="stages">
         <h2>Install stages</h2>
         <ol>
           <li><code>preflight</code> - guard checks, migration, log setup, marker prep</li>
@@ -56,7 +101,37 @@
         </ol>
       </section>
 
-      <section class="surface">
+      <section class="split" id="paths">
+        <article class="surface">
+          <h2>Supported install paths</h2>
+          <ul>
+            <li>Leenium ISO for the direct path</li>
+            <li>Official Arch ISO + cloned <code>leenium</code> repo</li>
+            <li>Existing Arch install layered with Leenium payload</li>
+          </ul>
+          <div class="callout">Keep expectations aligned: Leenium assumes Arch baseline choices and applies an opinionated desktop layer on top.</div>
+        </article>
+        <article class="surface">
+          <h2>Before running installer</h2>
+          <pre><code>git clone https://github.com/leenium/leenium
+cd leenium
+chmod +x install.sh
+./install.sh</code></pre>
+        </article>
+      </section>
+
+      <section class="surface" id="logs">
+        <h2>What each stage changes</h2>
+        <ul>
+          <li><code>preflight</code>: validates platform assumptions, prepares logs, and enforces install guards</li>
+          <li><code>packaging</code>: installs base package set plus hardware-aware package additions</li>
+          <li><code>config</code>: applies defaults from Leenium config payload and system-level tweaks</li>
+          <li><code>login</code>: configures session and boot UX pieces like SDDM and Plymouth integration</li>
+          <li><code>post-install</code>: final cleanup, hibernation setup flow, and completion marker handling</li>
+        </ul>
+      </section>
+
+      <section class="surface" id="triage">
         <h2>Logs and completion markers</h2>
         <p>When an install fails, check logs first before trying broad changes.</p>
         <pre><code>/var/log/leenium-install.log
@@ -64,7 +139,7 @@
 /var/tmp/leenium-install-completed</code></pre>
       </section>
 
-      <section class="surface">
+      <section class="surface" id="escalation">
         <h2>Fast triage</h2>
         <ul>
           <li>Installer does not start -> verify preflight requirements</li>
@@ -73,6 +148,16 @@
           <li>Boot works but desktop is off -> continue in Post-Install guide</li>
         </ul>
         <div class="hero-actions"><a class="button secondary" href="../post-install/">Go to Post-Install</a></div>
+      </section>
+
+      <section class="surface">
+        <h2>Escalation checklist</h2>
+        <ol>
+          <li>Capture both install logs and exact failing stage</li>
+          <li>Re-run with network verified and no background package manager activity</li>
+          <li>Collect runtime state using <code>leenium-debug --print</code> after first boot attempts</li>
+          <li>Escalate with command output plus logs instead of re-running blind resets</li>
+        </ol>
       </section>
 
       <footer class="footer">
@@ -85,6 +170,7 @@
       </footer>
     </div>
   </main>
+  <script src="../../scripts/manual.js"></script>
   <script src="../../scripts/theme.js"></script>
 </body>
 </html>

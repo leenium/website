@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-labelledby="title desc">
+  <title id="title">Leenium logo</title>
+  <desc id="desc">Geometric mint logo over black blocks.</desc>
+  <rect width="320" height="320" fill="#10e6ac"/>
+  <rect x="32" y="60" width="258" height="238" fill="#000000"/>
+  <path d="M 62 102 H 238 M 82 82 V 278 M 238 82 V 238 M 82 278 H 238 M 112 132 H 208 V 226 H 112 Z M 144 164 H 176 V 196 H 144 Z M 112 226 H 238" fill="none" stroke="#10e6ac" stroke-width="14" stroke-linecap="square" stroke-linejoin="miter"/>
+</svg>

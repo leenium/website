@@ -14,24 +14,37 @@
 <body>
   <header class="site-header">
     <div class="shell">
-      <a href="./" class="brand" aria-label="Leenium manual home">
-        <span class="brand-mark" aria-hidden="true"></span>
+      <a href="../" class="brand" aria-label="Leenium home">
+        <img src="../assets/logo.svg" class="brand-mark" alt="Leenium logo">
         <span class="brand-copy">
-          <strong>LEENIUM MANUAL</strong>
-          <span>Operator docs</span>
+          <strong>LEENIUM</strong>
+          <span>Arch Linux + Hyprland</span>
         </span>
       </a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
-      <nav id="site-nav" class="site-nav" aria-label="Manual navigation">
-        <a href="./install/">Install</a>
-        <a href="./post-install/">First Boot</a>
-        <a href="./troubleshooting/">Troubleshooting</a>
-        <a href="./keybindings/">Keybindings</a>
-        <a href="./hypr/">Hypr</a>
-        <a href="../" class="header-cta">Back to Home</a>
+      <nav id="site-nav" class="site-nav" aria-label="Primary">
+        <a href="../#download">Download</a>
+        <a href="../#install">Install</a>
+        <a href="../#docs">Docs</a>
+        <a href="./" class="is-active" aria-current="page">Manual</a>
+        <a href="../#repos">Repos</a>
+        <a href="https://github.com/leenium" target="_blank" rel="noopener noreferrer" class="header-cta">GitHub</a>
       </nav>
     </div>
   </header>
+
+  <nav class="manual-strip" aria-label="Manual chapters">
+    <div class="shell">
+      <a class="manual-link" data-manual-path="website/manual" href="./">Manual Home</a>
+      <a class="manual-link" data-manual-path="website/manual/install" href="./install/">Install</a>
+      <a class="manual-link" data-manual-path="website/manual/post-install" href="./post-install/">Post-Install</a>
+      <a class="manual-link" data-manual-path="website/manual/troubleshooting" href="./troubleshooting/">Troubleshooting</a>
+      <a class="manual-link" data-manual-path="website/manual/keybindings" href="./keybindings/">Keybindings</a>
+      <a class="manual-link" data-manual-path="website/manual/hypr" href="./hypr/">Hypr</a>
+      <a class="manual-link" data-manual-path="website/manual/commands" href="./commands/">Commands</a>
+      <a class="manual-link" data-manual-path="website/manual/hardware" href="./hardware/">Hardware</a>
+    </div>
+  </nav>
 
   <main>
     <div class="shell">
@@ -86,6 +99,19 @@
             <p>Load order, override boundaries, and safe file locations for customization.</p>
             <div class="hero-actions"><a class="button secondary" href="./hypr/">Open chapter</a></div>
           </article>
+
+          <article class="surface card">
+            <h3>Commands Catalog</h3>
+            <p>Grouped reference of <code>leenium-*</code> commands used for daily operations and support workflows.</p>
+            <div class="hero-actions"><a class="button secondary" href="./commands/">Open chapter</a></div>
+          </article>
+
+          <article class="surface card">
+            <h3>Hardware Compatibility</h3>
+            <p>Hardware helpers, power behavior, monitor controls, and model-oriented operational notes.</p>
+            <div class="hero-actions"><a class="button secondary" href="./hardware/">Open chapter</a></div>
+          </article>
+
           <article class="surface card">
             <h3>Back to homepage</h3>
             <p>Go back to release links, install methods, and public project repo overview.</p>
@@ -94,35 +120,65 @@
         </div>
       </section>
 
+      <section>
+        <div class="section-heading">
+          <h2>What this manual covers</h2>
+          <p>Leenium is more than a theme pack. These docs map install pipeline behavior, daily command surface, and recovery paths tied to the actual repo layout.</p>
+        </div>
+        <div class="card-grid">
+          <article class="surface card">
+            <h3>Installer pipeline</h3>
+            <p><code>preflight</code>, <code>packaging</code>, <code>config</code>, <code>login</code>, and <code>post-install</code> stages with checks and failure points.</p>
+          </article>
+          <article class="surface card">
+            <h3>Daily operations</h3>
+            <p>Core launch, package, refresh, restart, theme, and update workflows used after first boot.</p>
+          </article>
+          <article class="surface card">
+            <h3>Desktop internals</h3>
+            <p>Hyprland load order, override-safe files, and generated keybindings sourced from shipped config.</p>
+          </article>
+          <article class="surface card">
+            <h3>Hardware + power</h3>
+            <p>Battery tooling, monitor flows, hibernation behavior, and device-specific helper commands.</p>
+          </article>
+          <article class="surface card">
+            <h3>Debug + upload</h3>
+            <p>Practical debug capture and log upload commands to speed up root-cause analysis.</p>
+          </article>
+          <article class="surface card">
+            <h3>Repo boundaries</h3>
+            <p>What belongs in <code>leenium</code>, <code>iso</code>, <code>packages-builder</code>, and <code>pkg-repo</code> so fixes land in the right place.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="surface">
+        <h2>Repository map for contributors</h2>
+        <ul>
+          <li><code>leenium/</code> installer payload, configs, themes, and runtime commands</li>
+          <li><code>iso/</code> bootable image builder and keyring bootstrap flow</li>
+          <li><code>packages-builder/</code> package build + signing workflow</li>
+          <li><code>pkg-repo/</code> publish pipeline for <code>pkgs.leenium.org/stable/x86_64/</code></li>
+          <li><code>website/</code> release-facing pages and operator manuals</li>
+        </ul>
+      </section>
+
       <footer class="footer">
         <div>Leenium manual focuses on runtime operations and practical recovery.</div>
         <div class="footer-links">
           <a href="./install/">Install</a>
           <a href="./post-install/">Post-Install</a>
           <a href="./troubleshooting/">Troubleshooting</a>
+          <a href="./commands/">Commands</a>
+          <a href="./hardware/">Hardware</a>
           <a href="../">leenium.org</a>
         </div>
       </footer>
     </div>
   </main>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const navToggle = document.querySelector(".nav-toggle");
-      const siteNav = document.getElementById("site-nav");
-      if (!navToggle || !siteNav) return;
-      navToggle.addEventListener("click", function () {
-        const isOpen = siteNav.classList.toggle("is-open");
-        navToggle.setAttribute("aria-expanded", String(isOpen));
-      });
-      siteNav.querySelectorAll("a").forEach(function (link) {
-        link.addEventListener("click", function () {
-          siteNav.classList.remove("is-open");
-          navToggle.setAttribute("aria-expanded", "false");
-        });
-      });
-    });
-  </script>
+  <script src="../scripts/manual.js"></script>
   <script src="../scripts/theme.js"></script>
 </body>
 </html>

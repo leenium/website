@@ -11,6 +11,40 @@
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>
+  <header class="site-header">
+    <div class="shell">
+      <a href="../../" class="brand" aria-label="Leenium home">
+        <img src="../../assets/logo.svg" class="brand-mark" alt="Leenium logo">
+        <span class="brand-copy">
+          <strong>LEENIUM</strong>
+          <span>Arch Linux + Hyprland</span>
+        </span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav id="site-nav" class="site-nav" aria-label="Primary">
+        <a href="../../#download">Download</a>
+        <a href="../../#install">Install</a>
+        <a href="../../#docs">Docs</a>
+        <a href="../" class="is-active" aria-current="page">Manual</a>
+        <a href="../../#repos">Repos</a>
+        <a href="https://github.com/leenium" target="_blank" rel="noopener noreferrer" class="header-cta">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <nav class="manual-strip" aria-label="Manual chapters">
+    <div class="shell">
+      <a class="manual-link" data-manual-path="website/manual" href="../">Manual Home</a>
+      <a class="manual-link" data-manual-path="website/manual/install" href="../install/">Install</a>
+      <a class="manual-link" data-manual-path="website/manual/post-install" href="../post-install/">Post-Install</a>
+      <a class="manual-link" data-manual-path="website/manual/troubleshooting" href="../troubleshooting/">Troubleshooting</a>
+      <a class="manual-link" data-manual-path="website/manual/keybindings" href="../keybindings/">Keybindings</a>
+      <a class="manual-link" data-manual-path="website/manual/hypr" href="./">Hypr</a>
+      <a class="manual-link" data-manual-path="website/manual/commands" href="../commands/">Commands</a>
+      <a class="manual-link" data-manual-path="website/manual/hardware" href="../hardware/">Hardware</a>
+    </div>
+  </nav>
+
   <main>
     <div class="shell">
       <section class="hero">
@@ -21,9 +55,18 @@
           <a class="button primary" href="../keybindings/">View keybindings</a>
           <a class="button secondary" href="../">Manual Home</a>
         </div>
+        <nav class="page-toc" aria-label="On this page">
+          <strong>On this page</strong>
+          <div class="page-toc-links">
+            <a href="#load-order">Load order</a>
+            <a href="#override-tree">Override files</a>
+            <a href="#workflow">Workflow</a>
+            <a href="#controls">Related controls</a>
+          </div>
+        </nav>
       </section>
 
-      <section class="surface">
+      <section class="surface" id="load-order">
         <h2>Load order</h2>
         <p><code>~/.config/hypr/hyprland.conf</code> sources defaults from <code>~/.local/share/leenium/default/hypr</code> first, then user overrides from <code>~/.config/hypr</code>.</p>
         <pre><code>Defaults: autostart, bindings, envs, looknfeel, input, windows, current theme
@@ -31,7 +74,7 @@ Overrides: monitors.conf, input.conf, bindings.conf, looknfeel.conf, autostart.c
         <div class="callout">Practical rule: customize files under <code>~/.config/hypr</code>.</div>
       </section>
 
-      <section class="split">
+      <section class="split" id="override-tree">
         <article class="surface">
           <h2>User override tree</h2>
           <ul>
@@ -62,6 +105,38 @@ leenium-reinstall-configs</code></pre>
         <div class="callout warn"><code>leenium-reinstall-configs</code> is a reset action and can overwrite project-owned configuration changes.</div>
       </section>
 
+      <section class="split" id="workflow">
+        <article class="surface">
+          <h2>Safe customization workflow</h2>
+          <ol>
+            <li>Edit only files under <code>~/.config/hypr</code> for user overrides</li>
+            <li>Reload live with <code>hyprctl reload</code></li>
+            <li>Validate bindings via <code>leenium-menu-keybindings --print</code></li>
+            <li>Commit your override files if you manage dotfiles in git</li>
+          </ol>
+        </article>
+        <article class="surface">
+          <h2>High-value override files</h2>
+          <ul>
+            <li><code>monitors.conf</code> for layout, scaling, and monitor priority</li>
+            <li><code>bindings.conf</code> for user shortcuts</li>
+            <li><code>looknfeel.conf</code> for gaps, borders, blur, and visual behavior</li>
+            <li><code>autostart.conf</code> for session startup process control</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="surface" id="controls">
+        <h2>Related Leenium controls</h2>
+        <div class="hero-meta">
+          <span class="pill"><code>leenium-hyprland-window-gaps-toggle</code></span>
+          <span class="pill"><code>leenium-hyprland-workspace-layout-toggle</code></span>
+          <span class="pill"><code>leenium-hyprland-active-window-transparency-toggle</code></span>
+          <span class="pill"><code>leenium-hyprland-monitor-scaling-cycle</code></span>
+          <span class="pill"><code>leenium-hyprland-monitor-internal-mirror</code></span>
+        </div>
+      </section>
+
       <footer class="footer">
         <div>Hyprland reference for safe Leenium customization.</div>
         <div class="footer-links">
@@ -73,6 +148,7 @@ leenium-reinstall-configs</code></pre>
       </footer>
     </div>
   </main>
+  <script src="../../scripts/manual.js"></script>
   <script src="../../scripts/theme.js"></script>
 </body>
 </html>

@@ -11,6 +11,40 @@
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>
+  <header class="site-header">
+    <div class="shell">
+      <a href="../../" class="brand" aria-label="Leenium home">
+        <img src="../../assets/logo.svg" class="brand-mark" alt="Leenium logo">
+        <span class="brand-copy">
+          <strong>LEENIUM</strong>
+          <span>Arch Linux + Hyprland</span>
+        </span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav id="site-nav" class="site-nav" aria-label="Primary">
+        <a href="../../#download">Download</a>
+        <a href="../../#install">Install</a>
+        <a href="../../#docs">Docs</a>
+        <a href="../" class="is-active" aria-current="page">Manual</a>
+        <a href="../../#repos">Repos</a>
+        <a href="https://github.com/leenium" target="_blank" rel="noopener noreferrer" class="header-cta">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <nav class="manual-strip" aria-label="Manual chapters">
+    <div class="shell">
+      <a class="manual-link" data-manual-path="website/manual" href="../">Manual Home</a>
+      <a class="manual-link" data-manual-path="website/manual/install" href="../install/">Install</a>
+      <a class="manual-link" data-manual-path="website/manual/post-install" href="../post-install/">Post-Install</a>
+      <a class="manual-link" data-manual-path="website/manual/troubleshooting" href="../troubleshooting/">Troubleshooting</a>
+      <a class="manual-link" data-manual-path="website/manual/keybindings" href="./">Keybindings</a>
+      <a class="manual-link" data-manual-path="website/manual/hypr" href="../hypr/">Hypr</a>
+      <a class="manual-link" data-manual-path="website/manual/commands" href="../commands/">Commands</a>
+      <a class="manual-link" data-manual-path="website/manual/hardware" href="../hardware/">Hardware</a>
+    </div>
+  </nav>
+
   <main>
     <div class="shell">
       <section class="hero">
@@ -21,15 +55,42 @@
           <a class="button primary" href="#all-keybindings">Jump to table</a>
           <a class="button secondary" href="../">Manual Home</a>
         </div>
+        <nav class="page-toc" aria-label="On this page">
+          <strong>On this page</strong>
+          <div class="page-toc-links">
+            <a href="#sources">Sources</a>
+            <a href="#usage">How to use</a>
+            <a href="#all-keybindings">Filter table</a>
+          </div>
+        </nav>
       </section>
 
-      <section class="surface">
+      <section class="surface" id="sources">
         <h2>Sources</h2>
         <ul>
           <li><code>leenium/config/hypr/bindings.conf</code></li>
           <li><code>leenium/default/hypr/bindings/*.conf</code></li>
           <li><code>website/scripts/generate-keybindings.sh</code></li>
         </ul>
+      </section>
+
+      <section class="split" id="usage">
+        <article class="surface">
+          <h2>How to use this reference effectively</h2>
+          <ul>
+            <li>Search by app name to discover launch/focus flows quickly</li>
+            <li>Search by key combo fragments like <code>Super</code>, <code>Shift</code>, or function keys</li>
+            <li>Use bind type column to differentiate press, hold, and release semantics</li>
+            <li>Cross-check with Hypr reference before overriding default behavior globally</li>
+          </ul>
+        </article>
+        <article class="surface">
+          <h2>If a shortcut does not work</h2>
+          <pre><code>hyprctl reload
+leenium-menu-keybindings --print
+leenium-restart-walker
+leenium-restart-waybar</code></pre>
+        </article>
       </section>
 
       <section class="surface" id="all-keybindings">
@@ -39,8 +100,10 @@
           <input id="filterKeybinds" type="text" autocomplete="off" spellcheck="false" placeholder="shortcut, action, or bind type">
         </label>
         <div class="callout">If something looks stale, regenerate and verify before editing docs manually.</div>
-
-        <div id="generatedKeybindings"></div>
+        <div class="kbd-frame-wrap">
+          <iframe id="generatedKeybindingsFrame" class="kbd-frame" title="Generated keybindings table" loading="eager"></iframe>
+        </div>
+        <div id="generatedKeybindingsState" class="kbd-frame-note">Loading generated keybindings table...</div>
       </section>
 
       <footer class="footer">
@@ -55,34 +118,183 @@
   </main>
 
   <script>
-    async function loadKeybindingTable() {
-      const target = document.getElementById("generatedKeybindings");
-      if (!target) return;
-      try {
-        const response = await fetch("./generated-table.html", { cache: "no-store" });
-        if (!response.ok) throw new Error("Failed to load generated table");
-        target.innerHTML = await response.text();
-      } catch (_error) {
-        target.innerHTML = '<div class="callout warn">Could not load generated keybinding table. Run generation and refresh.</div>';
+    function keybindingsTableUrl() {
+      const path = window.location.pathname;
+      if (path.endsWith("/")) {
+        return path + "generated-table.html";
       }
+      if (path.endsWith("/index.html")) {
+        return path.replace(/index\.html$/, "generated-table.html");
+      }
+      return path + "/generated-table.html";
     }
 
-    function wireFilter() {
+    function setTableState(text) {
+      const state = document.getElementById("generatedKeybindingsState");
+      if (state) state.textContent = text;
+    }
+
+    function wireFilter(frameDoc) {
       const searchInput = document.getElementById("filterKeybinds");
-      if (!searchInput) return;
+      if (!searchInput || searchInput.dataset.ready === "1") return;
+      searchInput.dataset.ready = "1";
       searchInput.addEventListener("input", function () {
         const q = this.value.trim().toLowerCase();
-        document.querySelectorAll(".kbd-table tbody tr").forEach((row) => {
+        frameDoc.querySelectorAll(".kbd-table tbody tr").forEach((row) => {
           row.classList.toggle("hidden", q.length > 0 && !row.textContent.toLowerCase().includes(q));
         });
       });
     }
 
-    document.addEventListener("DOMContentLoaded", async function () {
-      await loadKeybindingTable();
-      wireFilter();
+    function applyFrameStyles(frameDoc) {
+      const style = frameDoc.createElement("style");
+      style.textContent = `
+        :root {
+          color-scheme: dark;
+        }
+
+        html, body {
+          margin: 0;
+          padding: 0;
+          background: transparent;
+          color: #e6f4ee;
+          font-family: "Space Grotesk", sans-serif;
+        }
+
+        .kbd-shell {
+          margin: 0;
+          padding: 12px;
+          display: grid;
+          gap: 14px;
+        }
+
+        .kbd-shell .section {
+          margin: 0;
+          border: 1px solid rgba(138, 185, 165, 0.2);
+          border-radius: 14px;
+          background: linear-gradient(180deg, rgba(15, 26, 23, 0.88), rgba(9, 16, 14, 0.9));
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+          overflow: hidden;
+        }
+
+        .kbd-shell .section h2 {
+          margin: 0;
+          padding: 14px 16px;
+          font-size: 1rem;
+          letter-spacing: -0.01em;
+          color: #c8f5e4;
+          border-bottom: 1px solid rgba(138, 185, 165, 0.16);
+          background: rgba(255, 255, 255, 0.02);
+        }
+
+        .kbd-table {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 0.92rem;
+        }
+
+        .kbd-table th,
+        .kbd-table td {
+          padding: 11px 12px;
+          border-bottom: 1px solid rgba(138, 185, 165, 0.12);
+          text-align: left;
+          vertical-align: top;
+          line-height: 1.5;
+        }
+
+        .kbd-table th {
+          font-family: "JetBrains Mono", monospace;
+          font-size: 0.76rem;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          color: #9fcab8;
+          background: rgba(6, 12, 10, 0.8);
+        }
+
+        .kbd-table tbody tr:nth-child(even) {
+          background: rgba(255, 255, 255, 0.015);
+        }
+
+        .kbd-table tbody tr:hover {
+          background: rgba(100, 223, 177, 0.08);
+        }
+
+        .kbd-table code {
+          font-family: "JetBrains Mono", monospace;
+          color: #e9d48e;
+          background: rgba(4, 9, 8, 0.9);
+          border: 1px solid rgba(138, 185, 165, 0.2);
+          border-radius: 8px;
+          padding: 2px 7px;
+          white-space: nowrap;
+          font-size: 0.84rem;
+        }
+
+        .kbd-table tr.hidden {
+          display: none;
+        }
+      `;
+      frameDoc.head.appendChild(style);
+    }
+
+    function initKeybindingsPage() {
+      const frame = document.getElementById("generatedKeybindingsFrame");
+      const searchInput = document.getElementById("filterKeybinds");
+      if (!frame) return;
+      if (frame.dataset.ready === "1") return;
+      frame.dataset.ready = "1";
+
+      frame.addEventListener("load", function () {
+        try {
+          const frameDoc = frame.contentDocument;
+          if (!frameDoc) throw new Error("No frame document");
+
+          if (!frameDoc.documentElement.dataset.kbdStyleReady) {
+            frameDoc.documentElement.dataset.kbdStyleReady = "1";
+            applyFrameStyles(frameDoc);
+          }
+
+          const body = frameDoc.body;
+          if (body) {
+            frame.style.height = Math.max(760, body.scrollHeight + 12) + "px";
+          }
+
+          if (searchInput) searchInput.disabled = false;
+          wireFilter(frameDoc);
+          setTableState("Generated table loaded.");
+        } catch (_error) {
+          if (searchInput) {
+            searchInput.disabled = true;
+            searchInput.placeholder = "Filter unavailable in this browser mode";
+          }
+          setTableState("Table loaded, but in-frame filtering is unavailable in this browser mode.");
+        }
+      }, { once: true });
+
+      frame.addEventListener("error", function () {
+        setTableState("Could not load generated table. Verify manual/keybindings/generated-table.html is served.");
+      }, { once: true });
+
+      if (!frame.getAttribute("src")) {
+        frame.setAttribute("src", keybindingsTableUrl());
+      }
+
+      try {
+        if (frame.contentDocument && frame.contentDocument.readyState === "complete") {
+          frame.dispatchEvent(new Event("load"));
+        }
+      } catch (_error) {}
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      initKeybindingsPage();
+    });
+
+    window.addEventListener("pageshow", function () {
+      initKeybindingsPage();
     });
   </script>
+  <script src="../../scripts/manual.js"></script>
   <script src="../../scripts/theme.js"></script>
 </body>
 </html>

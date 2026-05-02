@@ -11,6 +11,40 @@
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>
+  <header class="site-header">
+    <div class="shell">
+      <a href="../../" class="brand" aria-label="Leenium home">
+        <img src="../../assets/logo.svg" class="brand-mark" alt="Leenium logo">
+        <span class="brand-copy">
+          <strong>LEENIUM</strong>
+          <span>Arch Linux + Hyprland</span>
+        </span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav id="site-nav" class="site-nav" aria-label="Primary">
+        <a href="../../#download">Download</a>
+        <a href="../../#install">Install</a>
+        <a href="../../#docs">Docs</a>
+        <a href="../" class="is-active" aria-current="page">Manual</a>
+        <a href="../../#repos">Repos</a>
+        <a href="https://github.com/leenium" target="_blank" rel="noopener noreferrer" class="header-cta">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <nav class="manual-strip" aria-label="Manual chapters">
+    <div class="shell">
+      <a class="manual-link" data-manual-path="website/manual" href="../">Manual Home</a>
+      <a class="manual-link" data-manual-path="website/manual/install" href="../install/">Install</a>
+      <a class="manual-link" data-manual-path="website/manual/post-install" href="../post-install/">Post-Install</a>
+      <a class="manual-link" data-manual-path="website/manual/troubleshooting" href="./">Troubleshooting</a>
+      <a class="manual-link" data-manual-path="website/manual/keybindings" href="../keybindings/">Keybindings</a>
+      <a class="manual-link" data-manual-path="website/manual/hypr" href="../hypr/">Hypr</a>
+      <a class="manual-link" data-manual-path="website/manual/commands" href="../commands/">Commands</a>
+      <a class="manual-link" data-manual-path="website/manual/hardware" href="../hardware/">Hardware</a>
+    </div>
+  </nav>
+
   <main>
     <div class="shell">
       <section class="hero">
@@ -21,9 +55,19 @@
           <a class="button primary" href="../install/">Install manual</a>
           <a class="button secondary" href="../">Manual Home</a>
         </div>
+        <nav class="page-toc" aria-label="On this page">
+          <strong>On this page</strong>
+          <div class="page-toc-links">
+            <a href="#install-failures">Install failures</a>
+            <a href="#ui-recovery">UI recovery</a>
+            <a href="#symptoms">Symptom map</a>
+            <a href="#recovery-order">Recovery order</a>
+            <a href="#reinstall">Reinstall guidance</a>
+          </div>
+        </nav>
       </section>
 
-      <section class="split">
+      <section class="split" id="install-failures">
         <article class="surface">
           <h2>Install-time failures</h2>
           <pre><code>/var/log/archinstall/install.log
@@ -38,7 +82,18 @@ cat ~/.local/state/leenium/first-run.mode</code></pre>
         </article>
       </section>
 
-      <section class="surface">
+      <section class="surface" id="ui-recovery">
+        <h2>Common symptom map</h2>
+        <ul>
+          <li>Launcher not opening: run <code>leenium-restart-walker</code>, then verify Hypr bindings from keybindings docs</li>
+          <li>Bar missing after login: run <code>leenium-restart-waybar</code> and inspect <code>journalctl --user</code> output</li>
+          <li>Notifications broken: run <code>leenium-restart-mako</code> and verify notification daemon conflicts</li>
+          <li>Theme mismatch after update: run <code>leenium-theme-set &lt;theme&gt;</code> then component-level <code>leenium-refresh-*</code> commands</li>
+          <li>External monitor layout issues: use <code>leenium-hyprland-monitor-*</code> helpers before manual monitor edits</li>
+        </ul>
+      </section>
+
+      <section class="surface" id="symptoms">
         <h2>UI component recovery</h2>
         <ul>
           <li><code>leenium-restart-waybar</code></li>
@@ -68,7 +123,7 @@ leenium-upload-log last-boot</code></pre>
         </article>
       </section>
 
-      <section class="surface">
+      <section class="surface" id="recovery-order">
         <h2>Recovery order</h2>
         <ol>
           <li>Read the relevant log file</li>
@@ -76,6 +131,16 @@ leenium-upload-log last-boot</code></pre>
           <li>Collect debug info before broad reset commands</li>
           <li>Escalate to reinstall-style commands only when needed</li>
         </ol>
+      </section>
+
+      <section class="surface" id="reinstall">
+        <h2>When to reinstall vs. when to patch</h2>
+        <ul>
+          <li>Patch in place when issue is isolated to one component or one config target</li>
+          <li>Use <code>leenium-reinstall-configs</code> only when multiple defaults drifted and targeted refresh is too slow</li>
+          <li>Use <code>leenium-reinstall</code> only after logs confirm broad payload inconsistency</li>
+          <li>Always capture debug output before broad reinstall actions for reproducibility</li>
+        </ul>
       </section>
 
       <footer class="footer">
@@ -88,6 +153,7 @@ leenium-upload-log last-boot</code></pre>
       </footer>
     </div>
   </main>
+  <script src="../../scripts/manual.js"></script>
   <script src="../../scripts/theme.js"></script>
 </body>
 </html>
