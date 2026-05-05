@@ -97,6 +97,11 @@
       font-family: "JetBrains Mono", monospace;
     }
 
+    pre {
+      overflow-x: auto;
+      max-width: 100%;
+    }
+
     .shell {
       width: min(calc(100% - 32px), var(--max));
       margin: 0 auto;
@@ -871,11 +876,14 @@
 
       .hero-shell,
       .card-grid,
-      .docs-grid,
-      .repos-grid,
       .install-grid,
       .stats {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .docs-grid,
+      .repos-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .hero-copy {
@@ -884,7 +892,7 @@
 
       .release-shell,
       .release-meta-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
       }
 
       .hero-visual {
@@ -966,7 +974,7 @@
       }
 
       section {
-        margin-top: 72px;
+        margin-top: 60px;
       }
 
       .shell {
@@ -983,7 +991,7 @@
       }
 
       .hero-visual {
-        min-height: 460px;
+        min-height: 400px;
         padding: 8px 18px 26px;
       }
 
@@ -993,8 +1001,13 @@
         align-items: stretch;
       }
 
+      .meta-pill {
+        text-align: center;
+      }
+
       .hero-stack {
-        min-height: 380px;
+        min-height: 340px;
+        width: 100%;
       }
 
       .visual-frame {
@@ -1005,23 +1018,71 @@
       .hero-badge {
         top: 0;
         right: 10px;
-        min-width: 160px;
+        min-width: 140px;
+        max-width: 180px;
       }
 
       .hero-caption {
         left: 0;
         bottom: 0;
-        width: min(240px, 76%);
+        width: min(220px, 72%);
       }
 
       .button,
       .header-cta {
         width: 100%;
+        text-align: center;
       }
 
       .surface,
       .stat {
+        padding: 18px;
+      }
+
+      .docs-grid,
+      .repos-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .release-main {
         padding: 20px;
+      }
+
+      .release-side-card {
+        padding: 18px;
+      }
+
+      .release-meta-card {
+        padding: 14px 16px;
+      }
+
+      .section-heading h2 {
+        font-size: clamp(1.6rem, 6vw, 2.4rem);
+      }
+    }
+
+    @media (max-width: 420px) {
+      .hero-visual {
+        min-height: 320px;
+      }
+
+      .hero-stack {
+        min-height: 280px;
+      }
+
+      .hero-badge {
+        min-width: 120px;
+        font-size: 0.78rem;
+        padding: 10px 12px;
+      }
+
+      .hero-caption {
+        width: min(180px, 68%);
+        padding: 12px 14px;
+      }
+
+      .release-actions {
+        gap: 10px;
       }
     }
 
